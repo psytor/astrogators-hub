@@ -1,10 +1,11 @@
 import { useState, useEffect } from 'react';
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
-import { Card, Input, Button, apiClient } from '@psytor/astrogators-shared-ui';
+import { Card, Input, Button, useAuth } from '@psytor/astrogators-shared-ui';
 import { Layout } from '../components/Layout';
 import './AuthPage.css';
 
 export default function ResetPasswordPage() {
+  const { resetPassword } = useAuth();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const token = searchParams.get('token');
@@ -43,9 +44,10 @@ export default function ResetPasswordPage() {
     setLoading(true);
 
     try {
-      await apiClient.post('/api/v1/auth/reset-password', {
+      await resetPassword({
         token,
-        new_password: password,
+        password,
+        password_confirm: confirmPassword,
       });
       setSuccess(true);
       // Redirect to login after 3 seconds

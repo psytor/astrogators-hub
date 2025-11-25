@@ -54,6 +54,50 @@
   color: var(--color-text-primary);
 }
 
+.profile-field-value-group {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.profile-success-message {
+  padding: var(--spacing-md);
+  background-color: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  border-radius: var(--radius-md);
+  color: var(--color-success);
+  font-size: var(--font-size-sm);
+}
+
+.profile-error-message {
+  padding: var(--spacing-md);
+  background-color: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: var(--radius-md);
+  color: var(--color-error);
+  font-size: var(--font-size-sm);
+}
+
+.profile-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.profile-action-link {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: var(--font-weight-medium);
+  transition: all var(--transition-base);
+  display: inline-flex;
+  align-items: center;
+}
+
+.profile-action-link:hover {
+  color: var(--color-primary-hover);
+  transform: translateX(4px);
+}
+
 .profile-links {
   display: flex;
   flex-direction: column;

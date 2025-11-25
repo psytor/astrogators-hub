@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, Input, Button, apiClient } from '@psytor/astrogators-shared-ui';
+import { Card, Input, Button, useAuth } from '@psytor/astrogators-shared-ui';
 import { Layout } from '../components/Layout';
 import './AuthPage.css';
 
 export default function ForgotPasswordPage() {
+  const { forgotPassword } = useAuth();
   const [email, setEmail] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
@@ -16,7 +17,7 @@ export default function ForgotPasswordPage() {
     setLoading(true);
 
     try {
-      await apiClient.post('/api/v1/auth/forgot-password', { email });
+      await forgotPassword({ email });
       setSuccess(true);
     } catch (err: any) {
       setError(err.message || 'Failed to send password reset email.');
