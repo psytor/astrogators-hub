@@ -1,4 +1,5 @@
-import { Card, Badge } from '@psytor/astrogators-shared-ui';
+import { useState } from 'react';
+import { Card, Badge, useAuth } from '@psytor/astrogators-shared-ui';
 import { Layout } from '../components/Layout';
 import './HomePage.css';
 
@@ -8,6 +9,7 @@ interface Application {
   description: string;
   status: 'available' | 'beta' | 'coming-soon';
   route: string;
+  requiresVerification?: boolean;
 }
 
 const applications: Application[] = [
@@ -17,6 +19,7 @@ const applications: Application[] = [
     description: 'Analyze your mods and get intelligent recommendations on what to keep, slice, or sell. Upload your player data and let our evaluation system guide your mod management decisions.',
     status: 'available',
     route: '/mod-ledger',
+    requiresVerification: true,
   },
   {
     id: 'navicharts',
@@ -28,10 +31,21 @@ const applications: Application[] = [
 ];
 
 export default function HomePage() {
+  const { user, isAuthenticated } = useAuth();
+  const [blockedApp, setBlockedApp] = useState<string | null>(null);
+
   const handleAppClick = (app: Application) => {
-    if (app.status === 'available') {
-      window.location.href = app.route;
+    if (app.status !== 'available') {
+      return;
     }
+
+    // Check if app requires verification
+    if (app.requiresVerification && isAuthenticated && user && !user.is_verified) {
+      setBlockedApp(app.name);
+      return;
+    }
+
+    window.location.href = app.route;
   };
 
   return (
@@ -43,6 +57,19 @@ export default function HomePage() {
             Your command center for Star Wars: Galaxy of Heroes optimization tools
           </p>
         </header>
+
+        {blockedApp && (
+          <div className="verification-required-notice">
+            <strong>Email verification required</strong>
+            <p>
+              {blockedApp} requires a verified email address. Please verify your email to access
+              this application.
+            </p>
+            <button onClick={() => setBlockedApp(null)} className="notice-dismiss">
+              ✕
+            </button>
+          </div>
+        )}
 
         <div className="app-grid">
           {applications.map((app) => (

@@ -1,5 +1,6 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { TopBar, Container, Footer, Button, useAuth } from '@psytor/astrogators-shared-ui';
+import { VerificationBanner } from './VerificationBanner';
 
 interface LayoutProps {
   children: React.ReactNode;
@@ -48,6 +49,7 @@ export function Layout({ children }: LayoutProps) {
           )
         }
       />
+      <VerificationBanner />
       <main style={{ flex: 1 }}>
         <Container maxWidth="xl" padding>
           {children}

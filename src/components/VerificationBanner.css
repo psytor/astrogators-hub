@@ -1,0 +1,79 @@
+.verification-banner {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(234, 88, 12, 0.1) 100%);
+  border-bottom: 2px solid rgba(245, 158, 11, 0.3);
+  padding: var(--spacing-md) 0;
+}
+
+.verification-banner-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.verification-banner-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.verification-banner-text {
+  flex: 1;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-sm);
+}
+
+.verification-banner-text strong {
+  color: var(--color-warning);
+  font-weight: var(--font-weight-semibold);
+}
+
+.verification-banner-message {
+  margin-top: var(--spacing-xs);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+.verification-banner-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.verification-banner-dismiss {
+  background: none;
+  border: none;
+  color: var(--color-text-secondary);
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: var(--spacing-xs);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color var(--transition-base);
+  line-height: 1;
+}
+
+.verification-banner-dismiss:hover {
+  color: var(--color-text-primary);
+}
+
+@media (max-width: 768px) {
+  .verification-banner-content {
+    flex-wrap: wrap;
+  }
+
+  .verification-banner-icon {
+    font-size: 1.25rem;
+  }
+
+  .verification-banner-text {
+    flex: 1 1 100%;
+  }
+
+  .verification-banner-actions {
+    flex: 1 1 100%;
+    justify-content: space-between;
+  }
+}

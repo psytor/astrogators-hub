@@ -22,6 +22,49 @@
   margin: 0 auto;
 }
 
+.verification-required-notice {
+  background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(220, 38, 38, 0.1) 100%);
+  border: 2px solid rgba(239, 68, 68, 0.3);
+  border-radius: var(--radius-md);
+  padding: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+  position: relative;
+}
+
+.verification-required-notice strong {
+  display: block;
+  color: var(--color-error);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: var(--spacing-sm);
+}
+
+.verification-required-notice p {
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.notice-dismiss {
+  position: absolute;
+  top: var(--spacing-md);
+  right: var(--spacing-md);
+  background: none;
+  border: none;
+  color: var(--color-text-secondary);
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: var(--spacing-xs);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color var(--transition-base);
+  line-height: 1;
+}
+
+.notice-dismiss:hover {
+  color: var(--color-text-primary);
+}
+
 .app-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
