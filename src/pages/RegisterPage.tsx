@@ -33,7 +33,7 @@ export default function RegisterPage() {
     setLoading(true);
 
     try {
-      await register({ email, username, password });
+      await register({ email, username, password, password_confirm: confirmPassword });
       setSuccess(true);
       // Redirect to login after 3 seconds
       setTimeout(() => navigate('/login'), 3000);
