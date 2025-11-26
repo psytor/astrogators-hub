@@ -1,0 +1,79 @@
+.migration-banner {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(99, 102, 241, 0.1) 100%);
+  border-bottom: 2px solid rgba(59, 130, 246, 0.3);
+  padding: var(--spacing-md) 0;
+}
+
+.migration-banner-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 var(--spacing-lg);
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.migration-banner-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+
+.migration-banner-text {
+  flex: 1;
+  color: var(--color-text-primary);
+  font-size: var(--font-size-sm);
+}
+
+.migration-banner-text strong {
+  color: var(--color-primary);
+  font-weight: var(--font-weight-semibold);
+}
+
+.migration-banner-message {
+  margin-top: var(--spacing-xs);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-secondary);
+}
+
+.migration-banner-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+}
+
+.migration-banner-dismiss {
+  background: none;
+  border: none;
+  color: var(--color-text-secondary);
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: var(--spacing-xs);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color var(--transition-base);
+  line-height: 1;
+}
+
+.migration-banner-dismiss:hover {
+  color: var(--color-text-primary);
+}
+
+@media (max-width: 768px) {
+  .migration-banner-content {
+    flex-wrap: wrap;
+  }
+
+  .migration-banner-icon {
+    font-size: 1.25rem;
+  }
+
+  .migration-banner-text {
+    flex: 1 1 100%;
+  }
+
+  .migration-banner-actions {
+    flex: 1 1 100%;
+    justify-content: space-between;
+  }
+}

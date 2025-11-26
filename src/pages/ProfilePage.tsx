@@ -1,14 +1,29 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, Badge, Button, useAuth } from '@psytor/astrogators-shared-ui';
+import { Card, Badge, Button, Input, useAuth } from '@psytor/astrogators-shared-ui';
 import { Layout } from '../components/Layout';
 import './ProfilePage.css';
 
 export default function ProfilePage() {
-  const { user, resendVerification } = useAuth();
+  const {
+    user,
+    resendVerification,
+    allyCodes,
+    addAllyCode,
+    removeAllyCode,
+    selectAllyCode,
+    selectedAllyCode,
+    isLoadingAllyCodes
+  } = useAuth();
   const [resending, setResending] = useState(false);
   const [resendMessage, setResendMessage] = useState('');
   const [resendError, setResendError] = useState('');
+
+  // Ally code management state
+  const [newAllyCode, setNewAllyCode] = useState('');
+  const [allyCodeError, setAllyCodeError] = useState('');
+  const [allyCodeSuccess, setAllyCodeSuccess] = useState('');
+  const [addingAllyCode, setAddingAllyCode] = useState(false);
 
   if (!user) {
     return null;
@@ -27,6 +42,49 @@ export default function ProfilePage() {
     } finally {
       setResending(false);
     }
+  };
+
+  const handleAddAllyCode = async () => {
+    setAllyCodeError('');
+    setAllyCodeSuccess('');
+
+    // Validate format
+    if (!/^\d{9}$/.test(newAllyCode)) {
+      setAllyCodeError('Ally code must be exactly 9 digits');
+      return;
+    }
+
+    setAddingAllyCode(true);
+
+    try {
+      await addAllyCode(newAllyCode);
+      setAllyCodeSuccess('Ally code added successfully!');
+      setNewAllyCode('');
+      setTimeout(() => setAllyCodeSuccess(''), 3000);
+    } catch (err: any) {
+      setAllyCodeError(err.message || 'Failed to add ally code');
+    } finally {
+      setAddingAllyCode(false);
+    }
+  };
+
+  const handleRemoveAllyCode = async (allyCodeId: number | string) => {
+    setAllyCodeError('');
+    setAllyCodeSuccess('');
+
+    try {
+      await removeAllyCode(allyCodeId);
+      setAllyCodeSuccess('Ally code removed successfully!');
+      setTimeout(() => setAllyCodeSuccess(''), 3000);
+    } catch (err: any) {
+      setAllyCodeError(err.message || 'Failed to remove ally code');
+    }
+  };
+
+  const handleSetActiveAllyCode = (allyCode: string) => {
+    selectAllyCode(allyCode);
+    setAllyCodeSuccess('Ally code set as active!');
+    setTimeout(() => setAllyCodeSuccess(''), 2000);
   };
 
   return (
@@ -78,6 +136,86 @@ export default function ProfilePage() {
               <span className="profile-field-value">
                 {new Date(user.created_at).toLocaleDateString()}
               </span>
+            </div>
+          </div>
+        </Card>
+
+        <Card chamfered chamferSize="md" padding="lg" className="profile-card">
+          <div className="profile-section">
+            <h2 className="profile-section-title">Ally Codes</h2>
+            <p className="profile-section-description">
+              Manage your SWGOH ally codes. Add, remove, and set your active ally code.
+            </p>
+
+            {/* Add ally code form */}
+            <div className="ally-code-add-section">
+              <h3 className="ally-code-subsection-title">Add New Ally Code</h3>
+              <div className="ally-code-input-group">
+                <Input
+                  type="text"
+                  placeholder="Enter 9-digit ally code"
+                  value={newAllyCode}
+                  onChange={(e) => setNewAllyCode(e.target.value.replace(/\D/g, '').slice(0, 9))}
+                  disabled={addingAllyCode}
+                />
+                <Button
+                  variant="primary"
+                  size="md"
+                  onClick={handleAddAllyCode}
+                  loading={addingAllyCode}
+                  disabled={newAllyCode.length !== 9}
+                >
+                  Add Ally Code
+                </Button>
+              </div>
+              {allyCodeError && <div className="profile-error-message">{allyCodeError}</div>}
+              {allyCodeSuccess && <div className="profile-success-message">{allyCodeSuccess}</div>}
+            </div>
+
+            {/* Ally codes list */}
+            <div className="ally-code-list-section">
+              <h3 className="ally-code-subsection-title">Your Ally Codes</h3>
+              {isLoadingAllyCodes ? (
+                <p className="ally-code-loading">Loading ally codes...</p>
+              ) : allyCodes.length === 0 ? (
+                <p className="ally-code-empty">No ally codes saved yet. Add one above to get started!</p>
+              ) : (
+                <div className="ally-code-list">
+                  {allyCodes.map((code) => {
+                    const isActive = code.ally_code === selectedAllyCode;
+                    const codeId = 'id' in code ? code.id : code.ally_code;
+                    return (
+                      <div key={code.ally_code} className={`ally-code-item ${isActive ? 'active' : ''}`}>
+                        <div className="ally-code-item-info">
+                          <div className="ally-code-item-code">{code.ally_code}</div>
+                          {code.player_name && (
+                            <div className="ally-code-item-name">{code.player_name}</div>
+                          )}
+                          {isActive && <Badge variant="success" size="sm">Active</Badge>}
+                        </div>
+                        <div className="ally-code-item-actions">
+                          {!isActive && (
+                            <Button
+                              variant="secondary"
+                              size="sm"
+                              onClick={() => handleSetActiveAllyCode(code.ally_code)}
+                            >
+                              Set Active
+                            </Button>
+                          )}
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => handleRemoveAllyCode(codeId)}
+                          >
+                            Remove
+                          </Button>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              )}
             </div>
           </div>
         </Card>
