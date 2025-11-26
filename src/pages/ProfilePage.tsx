@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, Badge, Button, Input, useAuth } from '@psytor/astrogators-shared-ui';
+import { Card, Badge, Button, Input, useAuth, formatAllyCode } from '@psytor/astrogators-shared-ui';
 import { Layout } from '../components/Layout';
 import './ProfilePage.css';
 
@@ -187,7 +187,7 @@ export default function ProfilePage() {
                     return (
                       <div key={code.ally_code} className={`ally-code-item ${isActive ? 'active' : ''}`}>
                         <div className="ally-code-item-info">
-                          <div className="ally-code-item-code">{code.ally_code}</div>
+                          <div className="ally-code-item-code">{formatAllyCode(code.ally_code)}</div>
                           {code.player_name && (
                             <div className="ally-code-item-name">{code.player_name}</div>
                           )}

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Card, Badge, useAuth } from '@psytor/astrogators-shared-ui';
+import { Card, Badge, Button, Input, useAuth, formatAllyCode } from '@psytor/astrogators-shared-ui';
 import { Layout } from '../components/Layout';
 import './HomePage.css';
 
@@ -31,8 +31,38 @@ const applications: Application[] = [
 ];
 
 export default function HomePage() {
-  const { user, isAuthenticated } = useAuth();
+  const { user, isAuthenticated, allyCodes, selectedAllyCode, addAllyCode } = useAuth();
   const [blockedApp, setBlockedApp] = useState<string | null>(null);
+
+  // Ally code input state
+  const [allyCodeInput, setAllyCodeInput] = useState('');
+  const [allyCodeError, setAllyCodeError] = useState('');
+  const [allyCodeSuccess, setAllyCodeSuccess] = useState('');
+  const [addingAllyCode, setAddingAllyCode] = useState(false);
+
+  const handleAddAllyCode = async () => {
+    setAllyCodeError('');
+    setAllyCodeSuccess('');
+
+    // Validate format
+    if (!/^\d{9}$/.test(allyCodeInput)) {
+      setAllyCodeError('Ally code must be exactly 9 digits');
+      return;
+    }
+
+    setAddingAllyCode(true);
+
+    try {
+      await addAllyCode(allyCodeInput);
+      setAllyCodeSuccess('Ally code added successfully!');
+      setAllyCodeInput('');
+      setTimeout(() => setAllyCodeSuccess(''), 3000);
+    } catch (err: any) {
+      setAllyCodeError(err.message || 'Failed to add ally code');
+    } finally {
+      setAddingAllyCode(false);
+    }
+  };
 
   const handleAppClick = (app: Application) => {
     if (app.status !== 'available') {
@@ -57,6 +87,36 @@ export default function HomePage() {
             Your command center for Star Wars: Galaxy of Heroes optimization tools
           </p>
         </header>
+
+        {/* Ally Code Input Section - Show if no ally codes at all */}
+        {allyCodes.length === 0 && (
+          <Card chamfered chamferSize="md" padding="lg" className="ally-code-section">
+            <h2 className="ally-code-title">Get Started</h2>
+            <p className="ally-code-description">
+              Enter your SWGOH ally code to access all features
+            </p>
+            <div className="ally-code-input-group">
+              <Input
+                type="text"
+                placeholder="Enter your 9-digit ally code"
+                value={allyCodeInput}
+                onChange={(e) => setAllyCodeInput(e.target.value.replace(/\D/g, '').slice(0, 9))}
+                disabled={addingAllyCode}
+              />
+              <Button
+                variant="primary"
+                size="md"
+                onClick={handleAddAllyCode}
+                loading={addingAllyCode}
+                disabled={allyCodeInput.length !== 9}
+              >
+                Add Ally Code
+              </Button>
+            </div>
+            {allyCodeError && <div className="ally-code-error">{allyCodeError}</div>}
+            {allyCodeSuccess && <div className="ally-code-success">{allyCodeSuccess}</div>}
+          </Card>
+        )}
 
         {blockedApp && (
           <div className="verification-required-notice">
