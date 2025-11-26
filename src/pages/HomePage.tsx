@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Card, Badge, Button, Input, useAuth, formatAllyCode } from '@psytor/astrogators-shared-ui';
+import { Card, Badge, Button, Input, useAuth } from '@psytor/astrogators-shared-ui';
 import { Layout } from '../components/Layout';
 import './HomePage.css';
 
@@ -31,7 +31,7 @@ const applications: Application[] = [
 ];
 
 export default function HomePage() {
-  const { user, isAuthenticated, allyCodes, selectedAllyCode, addAllyCode } = useAuth();
+  const { user, isAuthenticated, allyCodes, addAllyCode } = useAuth();
   const [blockedApp, setBlockedApp] = useState<string | null>(null);
 
   // Ally code input state
