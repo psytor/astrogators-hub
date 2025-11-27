@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Card, Badge, Button, Input, useAuth } from '@psytor/astrogators-shared-ui';
+import { Card, Badge, Button, Input, useAuth, formatAllyCode } from '@psytor/astrogators-shared-ui';
 import { Layout } from '../components/Layout';
 import './HomePage.css';
 
@@ -98,8 +98,8 @@ export default function HomePage() {
             <div className="ally-code-input-group">
               <Input
                 type="text"
-                placeholder="Enter your 9-digit ally code"
-                value={allyCodeInput}
+                placeholder="123-456-789"
+                value={allyCodeInput.length === 9 ? formatAllyCode(allyCodeInput) : allyCodeInput}
                 onChange={(e) => setAllyCodeInput(e.target.value.replace(/\D/g, '').slice(0, 9))}
                 disabled={addingAllyCode}
               />
