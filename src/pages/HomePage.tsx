@@ -18,7 +18,7 @@ const applications: Application[] = [
     name: 'The Mod Ledger',
     description: 'Analyze your mods and get intelligent recommendations on what to keep, slice, or sell. Upload your player data and let our evaluation system guide your mod management decisions.',
     status: 'available',
-    route: '/mod-ledger',
+    route: import.meta.env.VITE_MOD_LEDGER_UI_URL || 'http://localhost:5174',
     requiresVerification: true,
   },
   {
