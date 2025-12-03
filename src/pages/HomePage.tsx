@@ -134,6 +134,7 @@ export default function HomePage() {
         <div className="app-grid">
           {applications.map((app) => (
             <a
+              key={app.id}
               href={app.status === 'available' ? app.route : undefined}
               style={{ textDecoration: 'none', color: 'inherit' }}
               onClick={(e) => {
@@ -148,7 +149,6 @@ export default function HomePage() {
               }}
             >
               <Card
-                key={app.id}
                 chamfered
                 chamferSize="lg"
                 padding="lg"
