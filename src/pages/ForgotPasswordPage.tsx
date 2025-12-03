@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, Input, Button, useAuth } from '@psytor/astrogators-shared-ui';
+import { Card, Input, Button, useAuth } from 'astrogators-shared-ui';
 import { Layout } from '../components/Layout';
 import './AuthPage.css';
 

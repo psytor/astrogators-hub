@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Card, Badge, Button, Input, useAuth, formatAllyCode } from '@psytor/astrogators-shared-ui';
+import { Card, Badge, Button, Input, useAuth, formatAllyCode } from 'astrogators-shared-ui';
 import { Layout } from '../components/Layout';
 import './HomePage.css';
 
@@ -18,8 +18,8 @@ const applications: Application[] = [
     name: 'The Mod Ledger',
     description: 'Analyze your mods and get intelligent recommendations on what to keep, slice, or sell. Upload your player data and let our evaluation system guide your mod management decisions.',
     status: 'available',
-    route: import.meta.env.VITE_MOD_LEDGER_UI_URL || 'http://localhost:5174',
-    requiresVerification: true,
+    route: '/mod-ledger/',  // Served through nginx at same origin (trailing slash required)
+    requiresVerification: false,
   },
   {
     id: 'navicharts',
@@ -133,15 +133,28 @@ export default function HomePage() {
 
         <div className="app-grid">
           {applications.map((app) => (
-            <Card
-              key={app.id}
-              chamfered
-              chamferSize="lg"
-              padding="lg"
-              hoverable={app.status === 'available'}
-              onClick={() => handleAppClick(app)}
-              className="app-card"
+            <a
+              href={app.status === 'available' ? app.route : undefined}
+              style={{ textDecoration: 'none', color: 'inherit' }}
+              onClick={(e) => {
+                if (app.status !== 'available') {
+                  e.preventDefault();
+                  return;
+                }
+                if (app.requiresVerification && isAuthenticated && user && !user.is_verified) {
+                  e.preventDefault();
+                  setBlockedApp(app.name);
+                }
+              }}
             >
+              <Card
+                key={app.id}
+                chamfered
+                chamferSize="lg"
+                padding="lg"
+                hoverable={app.status === 'available'}
+                className="app-card"
+              >
               <div className="app-card-header">
                 <h2 className="app-card-title">{app.name}</h2>
                 <Badge
@@ -168,6 +181,7 @@ export default function HomePage() {
                 </div>
               )}
             </Card>
+            </a>
           ))}
         </div>
       </div>

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Button, useAuth } from '@psytor/astrogators-shared-ui';
+import { Button, useAuth } from 'astrogators-shared-ui';
 import './AllyCodeMigrationBanner.css';
 
 export function AllyCodeMigrationBanner() {

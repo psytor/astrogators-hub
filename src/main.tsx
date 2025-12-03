@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
-import { AuthProvider, initializeApiClient } from '@psytor/astrogators-shared-ui';
-import '@psytor/astrogators-shared-ui/styles';
+import { AuthProvider, initializeApiClient } from 'astrogators-shared-ui';
+import 'astrogators-shared-ui/styles';
 import App from './App';
 
 // Build API base URL from environment variables

@@ -1,5 +1,5 @@
 import { Link, useNavigate } from 'react-router-dom';
-import { TopBar, Container, Footer, Button, AllyCodeDropdown, useAuth } from '@psytor/astrogators-shared-ui';
+import { TopBar, Container, Footer, Button, AllyCodeDropdown, useAuth } from 'astrogators-shared-ui';
 import { VerificationBanner } from './VerificationBanner';
 import { AllyCodeMigrationBanner } from './AllyCodeMigrationBanner';
 

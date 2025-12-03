@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Card, Badge, Button, Input, useAuth, formatAllyCode } from '@psytor/astrogators-shared-ui';
+import { Card, Badge, Button, Input, useAuth, formatAllyCode } from 'astrogators-shared-ui';
 import { Layout } from '../components/Layout';
 import './ProfilePage.css';
 
