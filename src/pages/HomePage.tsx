@@ -1,5 +1,6 @@
 import { useState } from 'react';
-import { Card, Badge, Button, Input, useAuth, formatAllyCode } from 'astrogators-shared-ui';
+import { Zap, Map, ArrowRight, CheckCircle, Clock } from 'lucide-react';
+import { Button, useAuth } from 'astrogators-shared-ui';
 import { Layout } from '../components/Layout';
 import './HomePage.css';
 
@@ -9,180 +10,178 @@ interface Application {
   description: string;
   status: 'available' | 'beta' | 'coming-soon';
   route: string;
-  requiresVerification?: boolean;
+  icon: typeof Zap;
+  iconColor: string;
+  features: string[];
 }
 
 const applications: Application[] = [
   {
     id: 'mod-ledger',
-    name: 'The Mod Ledger',
-    description: 'Analyze your mods and get intelligent recommendations on what to keep, slice, or sell. Upload your player data and let our evaluation system guide your mod management decisions.',
+    name: 'Mod Ledger',
+    description: 'Intelligent mod evaluation with advanced algorithms. Analyze your entire mod collection, identify keepers, and optimize your roster with data-driven recommendations.',
     status: 'available',
-    route: '/mod-ledger/',  // Served through nginx at same origin (trailing slash required)
-    requiresVerification: false,
+    route: '/mod-ledger/',
+    icon: Zap,
+    iconColor: '#3b82f6',
+    features: [
+      'Advanced evaluation algorithms',
+      'Real-time mod processing',
+      'Configurable evaluation rules',
+    ],
   },
   {
     id: 'navicharts',
     name: 'Navicharts',
-    description: 'Plan your farming roadmap with data-driven character recommendations. Build the optimal progression path based on your roster and goals.',
+    description: 'Interactive farming roadmaps and progress tracking. Plan your character development, track farming progress, and optimize your galactic conquest strategy.',
     status: 'coming-soon',
     route: '/navicharts',
+    icon: Map,
+    iconColor: '#6b7280',
+    features: [
+      'Interactive farming roadmaps',
+      'Progress tracking & analytics',
+      'Galactic Conquest optimization',
+    ],
   },
 ];
 
 export default function HomePage() {
-  const { user, isAuthenticated, allyCodes, addAllyCode } = useAuth();
-  const [blockedApp, setBlockedApp] = useState<string | null>(null);
-
-  // Ally code input state
-  const [allyCodeInput, setAllyCodeInput] = useState('');
-  const [allyCodeError, setAllyCodeError] = useState('');
-  const [allyCodeSuccess, setAllyCodeSuccess] = useState('');
-  const [addingAllyCode, setAddingAllyCode] = useState(false);
-
-  const handleAddAllyCode = async () => {
-    setAllyCodeError('');
-    setAllyCodeSuccess('');
-
-    // Validate format
-    if (!/^\d{9}$/.test(allyCodeInput)) {
-      setAllyCodeError('Ally code must be exactly 9 digits');
-      return;
-    }
-
-    setAddingAllyCode(true);
-
-    try {
-      await addAllyCode(allyCodeInput);
-      setAllyCodeSuccess('Ally code added successfully!');
-      setAllyCodeInput('');
-      setTimeout(() => setAllyCodeSuccess(''), 3000);
-    } catch (err: any) {
-      setAllyCodeError(err.message || 'Failed to add ally code');
-    } finally {
-      setAddingAllyCode(false);
-    }
-  };
-
-  const handleAppClick = (app: Application) => {
-    if (app.status !== 'available') {
-      return;
-    }
-
-    // Check if app requires verification
-    if (app.requiresVerification && isAuthenticated && user && !user.is_verified) {
-      setBlockedApp(app.name);
-      return;
-    }
-
-    window.location.href = app.route;
-  };
+  const { allyCodes } = useAuth();
+  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
 
   return (
     <Layout>
       <div className="home-page">
-        <header className="home-header">
-          <h1 className="home-title">The Astrogator's Table</h1>
-          <p className="home-subtitle">
-            Your command center for Star Wars: Galaxy of Heroes optimization tools
-          </p>
-        </header>
-
-        {/* Ally Code Input Section - Show if no ally codes at all */}
-        {allyCodes.length === 0 && (
-          <Card chamfered chamferSize="md" padding="lg" className="ally-code-section">
-            <h2 className="ally-code-title">Get Started</h2>
-            <p className="ally-code-description">
-              Enter your SWGOH ally code to access all features
+        {/* Content Container */}
+        <div className="home-container">
+          {/* Hero Section */}
+          <div className="home-hero">
+            <h1 className="home-title">The Astrogator's Table</h1>
+            <p className="home-subtitle">
+              Advanced SWGOH tools platform for mod evaluation, farming roadmaps, and roster optimization
             </p>
-            <div className="ally-code-input-group">
-              <Input
-                type="text"
-                placeholder="123-456-789"
-                value={allyCodeInput.length === 9 ? formatAllyCode(allyCodeInput) : allyCodeInput}
-                onChange={(e) => setAllyCodeInput(e.target.value.replace(/\D/g, '').slice(0, 9))}
-                disabled={addingAllyCode}
-              />
-              <Button
-                variant="primary"
-                size="md"
-                onClick={handleAddAllyCode}
-                loading={addingAllyCode}
-                disabled={allyCodeInput.length !== 9}
-              >
-                Add Ally Code
-              </Button>
-            </div>
-            {allyCodeError && <div className="ally-code-error">{allyCodeError}</div>}
-            {allyCodeSuccess && <div className="ally-code-success">{allyCodeSuccess}</div>}
-          </Card>
-        )}
-
-        {blockedApp && (
-          <div className="verification-required-notice">
-            <strong>Email verification required</strong>
-            <p>
-              {blockedApp} requires a verified email address. Please verify your email to access
-              this application.
-            </p>
-            <button onClick={() => setBlockedApp(null)} className="notice-dismiss">
-              ✕
-            </button>
           </div>
-        )}
 
-        <div className="app-grid">
-          {applications.map((app) => (
-            <a
-              key={app.id}
-              href={app.status === 'available' ? app.route : undefined}
-              style={{ textDecoration: 'none', color: 'inherit' }}
-              onClick={(e) => {
-                if (app.status !== 'available') {
-                  e.preventDefault();
-                  return;
-                }
-                if (app.requiresVerification && isAuthenticated && user && !user.is_verified) {
-                  e.preventDefault();
-                  setBlockedApp(app.name);
-                }
-              }}
-            >
-              <Card
-                chamfered
-                chamferSize="lg"
-                padding="lg"
-                hoverable={app.status === 'available'}
-                className="app-card"
-              >
-              <div className="app-card-header">
-                <h2 className="app-card-title">{app.name}</h2>
-                <Badge
-                  variant={
-                    app.status === 'available'
-                      ? 'success'
-                      : app.status === 'beta'
-                      ? 'warning'
-                      : 'default'
-                  }
-                  size="sm"
+          {/* Applications Grid */}
+          <div className="app-grid">
+            {applications.map((app) => {
+              const Icon = app.icon;
+              const isAvailable = app.status === 'available';
+              const isHovered = hoveredCard === app.id;
+
+              return (
+                <div
+                  key={app.id}
+                  className={`app-card-wrapper ${!isAvailable ? 'disabled' : ''}`}
+                  onMouseEnter={() => setHoveredCard(app.id)}
+                  onMouseLeave={() => setHoveredCard(null)}
                 >
-                  {app.status === 'available'
-                    ? 'Available'
-                    : app.status === 'beta'
-                    ? 'Beta'
-                    : 'Coming Soon'}
-                </Badge>
-              </div>
-              <p className="app-card-description">{app.description}</p>
-              {app.status === 'available' && (
-                <div className="app-card-footer">
-                  <span className="app-card-link">Launch Application →</span>
+                  {/* Glow effect on hover */}
+                  {isAvailable && isHovered && <div className="app-card-glow" />}
+
+                  {/* Main Card */}
+                  <div className="app-card">
+                    {/* Icon and Title */}
+                    <div className="app-card-header">
+                      <div
+                        className="app-icon-box"
+                        style={{ backgroundColor: isAvailable ? app.iconColor : '#4b5563' }}
+                      >
+                        <Icon className="app-icon" />
+                      </div>
+                      <div>
+                        <h3
+                          className="app-card-title"
+                          style={{ color: isAvailable ? app.iconColor : '#9ca3af' }}
+                        >
+                          {app.name}
+                        </h3>
+                        <p className={`app-status ${app.status}`}>
+                          {app.status === 'available' ? 'Available Now' :
+                           app.status === 'beta' ? 'Beta' : 'Coming Soon'}
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* Description */}
+                    <p className="app-card-description">{app.description}</p>
+
+                    {/* Features List */}
+                    <div className="app-features">
+                      {app.features.map((feature, index) => (
+                        <div key={index} className="feature-item">
+                          {isAvailable ? (
+                            <CheckCircle className="feature-icon feature-icon-active" />
+                          ) : (
+                            <Clock className="feature-icon feature-icon-inactive" />
+                          )}
+                          <span className={isAvailable ? 'feature-text' : 'feature-text-inactive'}>
+                            {feature}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+
+                    {/* Action Button */}
+                    {isAvailable ? (
+                      <a href={app.route} className="app-link">
+                        <Button
+                          variant="primary"
+                          size="lg"
+                          className="app-button"
+                        >
+                          Start Evaluating
+                          <ArrowRight className="button-icon" />
+                        </Button>
+                      </a>
+                    ) : (
+                      <Button
+                        variant="secondary"
+                        size="lg"
+                        disabled
+                        className="app-button"
+                      >
+                        Coming Soon
+                      </Button>
+                    )}
+
+                    {/* Continue with ally code button (for Mod Ledger only) */}
+                    {app.id === 'mod-ledger' && allyCodes.length > 0 && (
+                      <a href={`${app.route}?allyCode=${allyCodes[0].ally_code}`} className="app-link secondary">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="app-button-secondary"
+                        >
+                          Continue with {allyCodes[0].ally_code}
+                        </Button>
+                      </a>
+                    )}
+                  </div>
                 </div>
-              )}
-            </Card>
-            </a>
-          ))}
+              );
+            })}
+          </div>
+
+          {/* Get Started Section */}
+          <div className="get-started-section">
+            <h2 className="get-started-title">Get Started in Seconds</h2>
+            <div className="get-started-steps">
+              <div className="step">
+                <div className="step-number">1</div>
+                <span className="step-text">Enter your ally code</span>
+              </div>
+              <div className="step">
+                <div className="step-number">2</div>
+                <span className="step-text">Choose evaluation settings</span>
+              </div>
+              <div className="step">
+                <div className="step-number">3</div>
+                <span className="step-text">Get instant recommendations</span>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </Layout>
