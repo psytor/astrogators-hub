@@ -46,6 +46,10 @@ const applications: Application[] = [
   },
 ];
 
+// Border colors for cards
+const defaultBorderColor = '#374151'; // var(--color-border) equivalent (gray-700)
+const hoverBorderColor = 'rgba(59, 130, 246, 0.5)'; // blue on hover
+
 export default function HomePage() {
   const { allyCodes } = useAuth();
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
@@ -70,6 +74,8 @@ export default function HomePage() {
               const isAvailable = app.status === 'available';
               const isHovered = hoveredCard === app.id;
 
+              const borderColor = isAvailable && isHovered ? hoverBorderColor : defaultBorderColor;
+
               return (
                 <div
                   key={app.id}
@@ -81,7 +87,15 @@ export default function HomePage() {
                   {isAvailable && isHovered && <div className="app-card-glow" />}
 
                   {/* Main Card */}
-                  <Card chamfered chamferSize="md" padding="none" className="app-card">
+                  <Card
+                    chamfered
+                    chamferSize="lg"
+                    showDiagonalBorders
+                    diagonalBorderColor={borderColor}
+                    padding="none"
+                    className="app-card"
+                    style={{ '--border-color': borderColor } as React.CSSProperties}
+                  >
                     {/* Icon and Title */}
                     <div className="app-card-header">
                       <div
@@ -158,7 +172,7 @@ export default function HomePage() {
                         </Button>
                       </a>
                     )}
-                  </div>
+                  </Card>
                 </div>
               );
             })}

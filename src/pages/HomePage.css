@@ -125,15 +125,10 @@
   position: relative;
   background: rgba(17, 24, 39, 0.8); /* bg-gray-900/80 */
   backdrop-filter: blur(8px);
-  border: 2px solid var(--color-border);
-  /* border-radius removed - now handled by Card component chamfered prop */
+  border: 2px solid var(--border-color, var(--color-border));
   padding: var(--spacing-2xl);
   transition: all 300ms;
   text-align: left;
-}
-
-.app-card-wrapper:not(.disabled):hover .app-card {
-  border-color: rgba(59, 130, 246, 0.5);
 }
 
 /* ========== CARD HEADER (Icon + Title) ========== */
