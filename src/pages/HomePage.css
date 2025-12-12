@@ -126,7 +126,7 @@
   background: rgba(17, 24, 39, 0.8); /* bg-gray-900/80 */
   backdrop-filter: blur(8px);
   border: 2px solid var(--color-border);
-  border-radius: 1rem;
+  /* border-radius removed - now handled by Card component chamfered prop */
   padding: var(--spacing-2xl);
   transition: all 300ms;
   text-align: left;

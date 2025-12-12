@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Zap, Map, ArrowRight, CheckCircle, Clock } from 'lucide-react';
-import { Button, useAuth } from 'astrogators-shared-ui';
+import { Button, Card, useAuth } from 'astrogators-shared-ui';
 import { Layout } from '../components/Layout';
 import './HomePage.css';
 
@@ -81,7 +81,7 @@ export default function HomePage() {
                   {isAvailable && isHovered && <div className="app-card-glow" />}
 
                   {/* Main Card */}
-                  <div className="app-card">
+                  <Card chamfered chamferSize="md" padding="none" className="app-card">
                     {/* Icon and Title */}
                     <div className="app-card-header">
                       <div
