@@ -5,7 +5,7 @@ import { Layout } from '../components/Layout';
 import './AuthPage.css';
 
 export default function ResetPasswordPage() {
-  const { resetPassword } = useAuth();
+  const { resetPassword, authEnabled, isLoadingFeatures } = useAuth();
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const token = searchParams.get('token');
@@ -16,11 +16,30 @@ export default function ResetPasswordPage() {
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  // Redirect if auth is disabled
+  useEffect(() => {
+    if (!isLoadingFeatures && !authEnabled) {
+      navigate('/');
+    }
+  }, [authEnabled, isLoadingFeatures, navigate]);
+
   useEffect(() => {
     if (!token) {
       setError('Invalid or missing reset token');
     }
   }, [token]);
+
+  if (isLoadingFeatures) {
+    return (
+      <Layout>
+        <div style={{ textAlign: 'center', padding: '2rem' }}>Loading...</div>
+      </Layout>
+    );
+  }
+
+  if (!authEnabled) {
+    return null; // Will redirect via useEffect
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

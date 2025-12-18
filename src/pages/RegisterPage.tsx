@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Card, Input, Button, useAuth } from 'astrogators-shared-ui';
 import { Layout } from '../components/Layout';
@@ -12,8 +12,27 @@ export default function RegisterPage() {
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
-  const { register } = useAuth();
+  const { register, authEnabled, isLoadingFeatures } = useAuth();
   const navigate = useNavigate();
+
+  // Redirect if auth is disabled
+  useEffect(() => {
+    if (!isLoadingFeatures && !authEnabled) {
+      navigate('/');
+    }
+  }, [authEnabled, isLoadingFeatures, navigate]);
+
+  if (isLoadingFeatures) {
+    return (
+      <Layout>
+        <div style={{ textAlign: 'center', padding: '2rem' }}>Loading...</div>
+      </Layout>
+    );
+  }
+
+  if (!authEnabled) {
+    return null; // Will redirect via useEffect
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

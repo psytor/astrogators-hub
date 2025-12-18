@@ -1,16 +1,25 @@
 import { useState, useEffect } from 'react';
-import { Link, useSearchParams } from 'react-router-dom';
-import { Card, Button, Loader, apiClient } from 'astrogators-shared-ui';
+import { Link, useSearchParams, useNavigate } from 'react-router-dom';
+import { Card, Button, Loader, apiClient, useAuth } from 'astrogators-shared-ui';
 import { Layout } from '../components/Layout';
 import './AuthPage.css';
 
 export default function VerifyEmailPage() {
   const [searchParams] = useSearchParams();
+  const { authEnabled, isLoadingFeatures } = useAuth();
+  const navigate = useNavigate();
   const token = searchParams.get('token');
 
   const [loading, setLoading] = useState(true);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
+
+  // Redirect if auth is disabled
+  useEffect(() => {
+    if (!isLoadingFeatures && !authEnabled) {
+      navigate('/');
+    }
+  }, [authEnabled, isLoadingFeatures, navigate]);
 
   useEffect(() => {
     const verifyEmail = async () => {
@@ -32,6 +41,18 @@ export default function VerifyEmailPage() {
 
     verifyEmail();
   }, [token]);
+
+  if (isLoadingFeatures) {
+    return (
+      <Layout>
+        <div style={{ textAlign: 'center', padding: '2rem' }}>Loading...</div>
+      </Layout>
+    );
+  }
+
+  if (!authEnabled) {
+    return null; // Will redirect via useEffect
+  }
 
   return (
     <Layout>

@@ -8,7 +8,7 @@ interface LayoutProps {
 }
 
 export function Layout({ children }: LayoutProps) {
-  const { user, isAuthenticated, logout } = useAuth();
+  const { user, isAuthenticated, logout, authEnabled } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -36,7 +36,7 @@ export function Layout({ children }: LayoutProps) {
                   Logout
                 </Button>
               </>
-            ) : (
+            ) : authEnabled ? (
               <div style={{ display: 'flex', gap: '0.5rem' }}>
                 <Link to="/login">
                   <Button variant="ghost" size="sm">
@@ -49,7 +49,7 @@ export function Layout({ children }: LayoutProps) {
                   </Button>
                 </Link>
               </div>
-            )}
+            ) : null}
           </div>
         }
       />
