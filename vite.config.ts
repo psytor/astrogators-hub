@@ -12,6 +12,11 @@ export default defineConfig({
   },
   server: {
     port: 5173,
+    hmr: {
+      // Connect directly to dev server, bypassing nginx proxy
+      clientPort: 5173,
+      host: 'localhost',
+    },
     proxy: {
       '/api': {
         target: 'http://localhost:8000',
