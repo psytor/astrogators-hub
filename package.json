@@ -1,8 +1,11 @@
 {
   "name": "astrogators-hub",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Landing page and authentication hub for Astrogator's Table applications",
   "type": "module",
+  "engines": {
+    "node": ">=24 <25"
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -10,17 +13,17 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "astrogators-shared-ui": "^0.5.0",
-    "lucide-react": "^0.454.0",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "react-router-dom": "^6.22.0"
+    "astrogators-shared-ui": "^0.6.0",
+    "lucide-react": "^1.8.0",
+    "react": "^19.2.5",
+    "react-dom": "^19.2.5",
+    "react-router-dom": "^7.14.1"
   },
   "devDependencies": {
-    "@types/react": "^18.2.66",
-    "@types/react-dom": "^18.2.22",
-    "@vitejs/plugin-react": "^4.2.1",
-    "typescript": "^5.2.2",
-    "vite": "^5.2.0"
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^6.0.1",
+    "typescript": "^6.0.3",
+    "vite": "^8.0.9"
   }
 }
