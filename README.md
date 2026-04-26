@@ -1,242 +1,129 @@
 # astrogators-hub
 
-Landing page and authentication hub for The Astrogator's Table - your command center for Star Wars: Galaxy of Heroes optimization tools.
+Landing page and authentication UI for **The Astrogator's Table**, a SWGOH
+tooling ecosystem. This submodule hosts the marketing home page,
+cross-app navigation, and the full auth flow (login, register, password
+reset, email verification, profile + ally-code management).
 
-## Features
+It owns no persistent state. All data lives in the
+[`astrogators-table`](../astrogators-table) backend or browser storage,
+both accessed exclusively through the
+[`astrogators-shared-ui`](../astrogators-shared-ui) library.
 
-- **Landing Page**: Showcase of available applications with chamfered card design
-- **Authentication System**: Complete user management (registration, login, password reset, email verification)
-- **User Profiles**: View account information and access applications
-- **Protected Routes**: Secure access to authenticated-only pages
-- **Responsive Design**: Mobile-friendly layout
+## Stack
 
-## Tech Stack
+- Node **24** (pinned via `.nvmrc` and `engines`)
+- React **19.2** + react-dom **19.2**
+- TypeScript **6**
+- Vite **8** (`@vitejs/plugin-react` 6)
+- React Router **7** — declarative `<Routes>`/`<Route>` API
+- `astrogators-shared-ui` **^0.6.0** — `AuthProvider`, API client, shared components
+- `lucide-react` **1.x** — icons
 
-- **React 18** with TypeScript
-- **Vite** for fast development and building
-- **React Router** for navigation
-- **@psytor/astrogators-shared-ui** - Shared component library
+## Single-origin architecture
 
-## Prerequisites
+The hub, `mod-ledger-ui`, and both backends are served from one origin in
+both dev and prod, fronted by the workspace nginx reverse proxy:
 
-- Node.js 18+
-- npm or yarn
-- Access to GitHub Packages (for @psytor/astrogators-shared-ui)
+- Dev: `http://localhost/`
+- Prod: `https://astrotable.dynv6.net/`
+
+Every `VITE_*_URL` points through that proxy. Direct-port URLs
+(e.g. `http://localhost:8000/...`) are not supported — they would break
+auth-state sharing (localStorage is per-origin) and force CORS.
 
 ## Setup
 
-### 1. Clone and Install
-
 ```bash
-cd /home/psytor/projects/astro-table/astrogators-hub
+nvm use            # activate Node 24
 npm install
-```
-
-### 2. Configure Environment
-
-Copy the example environment file:
-
-```bash
 cp .env.example .env
+npm run dev        # http://localhost:5173 (proxied as / in dev)
 ```
 
-Edit `.env` and set your backend API URL:
+## Configuration
 
-```env
-VITE_API_BASE_URL=http://localhost:8000
-```
+`.env` lives at the submodule root and is gitignored. Vite **inlines these
+values at build time** — changing them requires a rebuild. The Docker build
+forwards them via `--build-arg` (see `docker/docker-compose.yml`).
 
-### 3. Run Development Server
+| Variable | Purpose | Dev | Prod |
+|---|---|---|---|
+| `VITE_ASTROGATORS_TABLE_URL` | Backend (auth + game data), including its `SERVICE_PREFIX` | `http://localhost/astrogators-table` | `https://astrotable.dynv6.net/astrogators-table` |
+| `VITE_MOD_LEDGER_UI_URL` | Cross-app navigation target | `http://localhost/mod-ledger` | `https://astrotable.dynv6.net/mod-ledger` |
+
+When adding a new variable, update `.env.example` and the consumer together.
+
+## Scripts
 
 ```bash
-npm run dev
-```
-
-The application will be available at http://localhost:5173
-
-## Available Scripts
-
-```bash
-# Development server with hot reload
-npm run dev
-
-# Build for production
-npm run build
-
-# Preview production build
-npm run preview
-
-# Type check without building
-npm run type-check
-```
-
-## Project Structure
-
-```
-astrogators-hub/
-├── src/
-│   ├── components/
-│   │   └── Layout.tsx       # Shared layout with TopBar/Footer
-│   ├── pages/
-│   │   ├── HomePage.tsx     # Landing page with app cards
-│   │   ├── LoginPage.tsx    # User login
-│   │   ├── RegisterPage.tsx # Account creation
-│   │   ├── ForgotPasswordPage.tsx
-│   │   ├── ResetPasswordPage.tsx
-│   │   ├── VerifyEmailPage.tsx
-│   │   └── ProfilePage.tsx  # User profile
-│   ├── App.tsx              # Main app with routing
-│   └── main.tsx             # Entry point
-├── public/
-├── index.html
-├── vite.config.ts
-└── package.json
+npm run dev          # Vite dev server, port 5173
+npm run build        # tsc + vite build → dist/
+npm run preview      # serve dist/ on port 4173
+npm run type-check   # tsc --noEmit
 ```
 
 ## Routes
 
-### Public Routes
+Public:
 
-- `/` - Landing page (application showcase)
-- `/login` - User login
-- `/register` - User registration
-- `/forgot-password` - Request password reset
-- `/reset-password?token=...` - Reset password with token
-- `/verify-email?token=...` - Verify email address
+- `/` — landing page
+- `/login`, `/register`
+- `/forgot-password`, `/reset-password?token=...`
+- `/verify-email?token=...`
 
-### Protected Routes
+Protected (redirects to `/login` when unauthenticated):
 
-- `/profile` - User profile (requires authentication)
+- `/profile` — account info + ally-code management
 
-## Integration with Backend
+Unknown paths redirect to `/`.
 
-This application connects to the `astrogators-table` backend API for authentication:
+## Project layout
 
-- **Base URL**: Configured via `VITE_API_BASE_URL`
-- **API Endpoints**:
-  - `POST /api/v1/auth/register` - User registration
-  - `POST /api/v1/auth/login` - User login
-  - `POST /api/v1/auth/refresh-token` - Token refresh
-  - `POST /api/v1/auth/forgot-password` - Request password reset
-  - `POST /api/v1/auth/reset-password` - Reset password
-  - `POST /api/v1/auth/verify-email` - Verify email
-  - `GET /api/v1/users/me` - Get current user
-
-**Authentication Flow**:
-1. User logs in → JWT tokens stored in localStorage
-2. API client automatically includes access token in requests
-3. On 401 error, automatically refreshes token
-4. On refresh failure, redirects to login
-
-## Deployment
-
-### Build for Production
-
-```bash
-npm run build
+```
+src/
+├── App.tsx              # <Routes> + ProtectedRoute wrapper
+├── main.tsx             # entry, mounts AuthProvider
+├── components/
+│   ├── Layout.tsx
+│   ├── VerificationBanner.tsx
+│   └── AllyCodeMigrationBanner.tsx
+└── pages/
+    ├── HomePage.tsx
+    ├── LoginPage.tsx
+    ├── RegisterPage.tsx
+    ├── ForgotPasswordPage.tsx
+    ├── ResetPasswordPage.tsx
+    ├── VerifyEmailPage.tsx
+    └── ProfilePage.tsx
 ```
 
-This creates optimized static files in `dist/` directory.
+## Auth + API access
 
-### Serve with nginx
-
-Example nginx configuration (production):
-
-```nginx
-server {
-    listen 80;
-    server_name astrogators-table.com;
-
-    # Serve static files
-    location / {
-        root /var/www/astrogators-hub/dist;
-        try_files $uri $uri/ /index.html;
-    }
-
-    # Proxy API requests to backend
-    location /api/ {
-        proxy_pass http://localhost:8000;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-    }
-}
-```
-
-### Docker (Optional)
-
-Create a simple nginx-based Docker container:
-
-```dockerfile
-FROM nginx:alpine
-COPY dist/ /usr/share/nginx/html
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-```
-
-## Development
-
-### Adding New Pages
-
-1. Create page component in `src/pages/`
-2. Add route in `src/App.tsx`
-3. Link from other pages or navigation
-
-### Using Shared Components
-
-Import from the shared UI library:
+All auth and API calls go through `astrogators-shared-ui`. The hub does
+not implement a second API client, second auth context, or bespoke JWT
+handling. If shared-ui is missing something, extend it there and cut a new
+release.
 
 ```tsx
-import {
-  TopBar,
-  Button,
-  Card,
-  Input,
-  useAuth,
-} from '@psytor/astrogators-shared-ui';
+import { useAuth, TopBar, Button, Card, Input } from 'astrogators-shared-ui';
+import 'astrogators-shared-ui/styles';
 ```
 
-### Styling
+## Docker
 
-- Use CSS modules for component-specific styles
-- Import shared CSS: `import '@psytor/astrogators-shared-ui/styles'`
-- Use CSS variables from shared library for consistency
-
-## Environment Variables
-
-| Variable | Description | Default |
-|----------|-------------|---------|
-| `VITE_API_BASE_URL` | Backend API base URL | `http://localhost:8000` |
-
-## Troubleshooting
-
-### "Cannot find module '@psytor/astrogators-shared-ui'"
-
-Ensure you have a `.npmrc` file with:
-```
-@psytor:registry=https://npm.pkg.github.com
-```
-
-And authenticate with GitHub Packages (see shared-ui README).
-
-### Build Errors
-
-Run type check to see TypeScript errors:
 ```bash
-npm run type-check
+docker compose -f docker/docker-compose.yml --env-file .env up -d --build
 ```
 
-### API Connection Issues
+The container runs with `network_mode: host` and listens on
+`localhost:4173`. The workspace nginx (at the workspace root, not in this
+submodule) is the single front door — never join another compose project's
+network.
 
-- Verify `VITE_API_BASE_URL` in `.env`
-- Check backend is running on specified port
-- Check CORS configuration in backend
+## Related
 
-## Related Projects
-
-- [astrogators-shared-ui](../astrogators-shared-ui) - Shared component library
-- [astrogators-table](../astrogators-table) - Backend API service
-- [mod-ledger](../mod-ledger) - Mod analysis backend
-- [mod-ledger-ui](../mod-ledger-ui) - Mod analysis frontend (coming soon)
-
-## License
-
-MIT
+- [astrogators-shared-ui](../astrogators-shared-ui) — shared component + auth library
+- [astrogators-table](../astrogators-table) — auth + game-data backend
+- [mod-ledger-ui](../mod-ledger-ui) — sibling frontend
+- [mod-ledger](../mod-ledger) — mod evaluation backend
