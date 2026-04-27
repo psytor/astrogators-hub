@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Zap, Map, ArrowRight, CheckCircle, Clock } from 'lucide-react';
+import { Zap, Map, Bot, ArrowRight, CheckCircle, Clock } from 'lucide-react';
 import { Button, Card, useAuth } from 'astrogators-shared-ui';
 import { Layout } from '../components/Layout';
 import './HomePage.css';
@@ -13,6 +13,7 @@ interface Application {
   icon: typeof Zap;
   iconColor: string;
   features: string[];
+  cta?: string;
 }
 
 const applications: Application[] = [
@@ -29,6 +30,21 @@ const applications: Application[] = [
       'Real-time mod processing',
       'Configurable evaluation rules',
     ],
+  },
+  {
+    id: 'nightwatcher',
+    name: 'Nightwatcher',
+    description: 'A Discord bot that audits your SWGOH guild\'s daily tickets so officers don\'t have to. Quiet, roster-aware, and ready to invite.',
+    status: 'available',
+    route: '/nightwatcher/',
+    icon: Bot,
+    iconColor: '#5865f2',
+    features: [
+      'Daily ticket auditing',
+      'Roster-aware insights',
+      'Officer-friendly digests',
+    ],
+    cta: 'Visit',
   },
   {
     id: 'navicharts',
@@ -145,7 +161,7 @@ export default function HomePage() {
                           size="lg"
                           className="app-button"
                         >
-                          Start Evaluating
+                          {app.cta || 'Start Evaluating'}
                           <ArrowRight className="button-icon" />
                         </Button>
                       </a>
