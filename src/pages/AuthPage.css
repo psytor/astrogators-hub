@@ -37,16 +37,6 @@
   text-align: center;
 }
 
-.auth-success {
-  padding: var(--spacing-md);
-  background-color: rgba(52, 168, 83, 0.1);
-  border: 1px solid var(--color-success);
-  border-radius: var(--radius-md);
-  color: var(--color-success);
-  margin-bottom: var(--spacing-md);
-  text-align: center;
-}
-
 .auth-form {
   display: flex;
   flex-direction: column;

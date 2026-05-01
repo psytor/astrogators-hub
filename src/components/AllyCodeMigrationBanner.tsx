@@ -24,6 +24,7 @@ export function AllyCodeMigrationBanner() {
       }, 2000);
     } catch (err: any) {
       setMessage(err.message || 'Failed to migrate ally codes');
+    } finally {
       setMigrating(false);
     }
   };

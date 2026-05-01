@@ -50,7 +50,6 @@ forwards them via `--build-arg` (see `docker/docker-compose.yml`).
 | Variable | Purpose | Dev | Prod |
 |---|---|---|---|
 | `VITE_ASTROGATORS_TABLE_URL` | Backend (auth + game data), including its `SERVICE_PREFIX` | `http://localhost/astrogators-table` | `https://astrotable.dynv6.net/astrogators-table` |
-| `VITE_MOD_LEDGER_UI_URL` | Cross-app navigation target | `http://localhost/mod-ledger` | `https://astrotable.dynv6.net/mod-ledger` |
 
 When adding a new variable, update `.env.example` and the consumer together.
 

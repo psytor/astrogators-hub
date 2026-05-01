@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Zap, Map, Bot, ArrowRight, CheckCircle, Clock } from 'lucide-react';
+import { Zap, Map, ArrowRight, CheckCircle, Clock } from 'lucide-react';
 import { Button, Card, useAuth } from 'astrogators-shared-ui';
 import { Layout } from '../components/Layout';
 import './HomePage.css';
@@ -10,7 +10,8 @@ interface Application {
   description: string;
   status: 'available' | 'beta' | 'coming-soon';
   route: string;
-  icon: typeof Zap;
+  icon?: typeof Zap;
+  iconImage?: string;
   iconColor: string;
   features: string[];
   cta?: string;
@@ -37,7 +38,7 @@ const applications: Application[] = [
     description: 'A Discord bot that audits your SWGOH guild\'s daily tickets so officers don\'t have to. Quiet, roster-aware, and ready to invite.',
     status: 'available',
     route: '/nightwatcher/',
-    icon: Bot,
+    iconImage: '/assets/images/nightwatcher.png',
     iconColor: '#5865f2',
     features: [
       'Daily ticket auditing',
@@ -88,6 +89,7 @@ export default function HomePage() {
             {applications.map((app) => {
               const Icon = app.icon;
               const isAvailable = app.status === 'available';
+              const useImage = Boolean(app.iconImage);
               const isHovered = hoveredCard === app.id;
 
               const borderColor = isAvailable && isHovered ? hoverBorderColor : defaultBorderColor;
@@ -114,12 +116,20 @@ export default function HomePage() {
                   >
                     {/* Icon and Title */}
                     <div className="app-card-header">
-                      <div
-                        className="app-icon-box"
-                        style={{ backgroundColor: isAvailable ? app.iconColor : '#4b5563' }}
-                      >
-                        <Icon className="app-icon" />
-                      </div>
+                      {useImage ? (
+                        <img
+                          src={app.iconImage}
+                          alt=""
+                          className="app-icon-box app-icon-image"
+                        />
+                      ) : (
+                        <div
+                          className="app-icon-box"
+                          style={{ backgroundColor: isAvailable ? app.iconColor : '#4b5563' }}
+                        >
+                          {Icon && <Icon className="app-icon" />}
+                        </div>
+                      )}
                       <div>
                         <h3
                           className="app-card-title"

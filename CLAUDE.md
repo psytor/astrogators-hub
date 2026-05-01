@@ -124,9 +124,6 @@ Current vars:
   `SERVICE_PREFIX`, routed through the workspace nginx. Dev:
   `http://localhost/astrogators-table`. Prod:
   `https://astrotable.dynv6.net/astrogators-table`.
-- `VITE_MOD_LEDGER_UI_URL` — cross-app navigation target, also proxied.
-  Dev: `http://localhost/mod-ledger`. Prod:
-  `https://astrotable.dynv6.net/mod-ledger`.
 
 ## When adding dependencies
 

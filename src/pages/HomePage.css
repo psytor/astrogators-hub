@@ -156,6 +156,12 @@
   color: white;
 }
 
+.app-icon-image {
+  object-fit: cover;
+  background: transparent;
+  border-radius: var(--radius-full);
+}
+
 .app-card-title {
   font-size: var(--font-size-2xl);
   font-weight: var(--font-weight-bold);
