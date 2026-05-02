@@ -19,7 +19,7 @@ here must not ripple into sibling services.
 React 19 + Vite 8 + TypeScript 6 single-page app. It is the **landing page
 and auth UI** for the Astrogator's Table ecosystem:
 
-- Marketing home page and cross-app navigation
+- Home page listing the apps in the ecosystem and linking to them
 - Login, register, forgot/reset password, verify email
 - Authenticated profile management (incl. ally-code CRUD)
 
@@ -83,6 +83,40 @@ npm run type-check
 # Build + run in Docker
 docker compose -f docker/docker-compose.yml --env-file .env up -d --build
 ```
+
+## Tone rule (READ BEFORE WRITING ANY USER-FACING COPY)
+
+This is **not a marketing site**. It is a hub: a list of apps the user
+can open, plus auth. The audience is the owner and a small group of
+known users — they already know what's here. Do not write to a stranger
+you're trying to convert.
+
+Hard rules — these have been violated before and the result was awful:
+
+- **No sales copy.** Do not write taglines, value propositions, or
+  flattering adjectives. App descriptions are one factual sentence about
+  what the app does. "Audits SWGOH guild tickets nightly" — not "Quiet,
+  roster-aware ticket auditing built for officers who care."
+- **No invented status indicators.** Never add an "Online" / "Live" /
+  "Healthy" / "Beta" / "New" badge unless wired to a real signal. The
+  apps in this hub are not interconnected for health checks. A green dot
+  that always says "Online" is a lie.
+- **No invented metrics.** No user counts, uptime numbers, "trusted by N
+  guilds", "1000+ audits/night", etc. We don't measure these and we are
+  not going to fake them.
+- **No padded feature lists.** If an app has two real features, list
+  two. Do not pad to three or five for visual symmetry. Do not paraphrase
+  the same feature into multiple bullets.
+- **No comparative claims.** "Faster than…", "the easiest way to…", "the
+  only tool that…" — none of this. Even if true, it's not the hub's job
+  to argue.
+- **Borrow facts from each app's own docs.** If you're describing
+  Nightwatcher, the source of truth is `nightwatcher/docs/ADMIN_GUIDE.md`
+  and that submodule's `CLAUDE.md`. Don't invent capabilities the app
+  doesn't have.
+
+If a section feels empty after applying these rules, leave it empty or
+delete the section. An honest empty space is better than filler.
 
 ## Critical rules
 
