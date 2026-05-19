@@ -158,6 +158,13 @@ Current vars:
   `SERVICE_PREFIX`, routed through the workspace nginx. Dev:
   `http://localhost/astrogators-table`. Prod:
   `https://astrotable.dynv6.net/astrogators-table`.
+- `VITE_MOD_LEDGER_UI_URL` — forwarded as a build-arg by
+  `docker/docker-compose.yml` and `Dockerfile` for future cross-app link
+  use. Not currently read in `src/` (cross-app routes in
+  `pages/HomePage.tsx` are hardcoded paths under the same origin). Keep it
+  defined in `.env` so the Docker build does not warn about an undefined
+  variable — but if `src/` ever stops referencing the concept too, remove
+  the build-arg in the same commit you remove the env var.
 
 ## When adding dependencies
 

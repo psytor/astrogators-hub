@@ -50,6 +50,7 @@ forwards them via `--build-arg` (see `docker/docker-compose.yml`).
 | Variable | Purpose | Dev | Prod |
 |---|---|---|---|
 | `VITE_ASTROGATORS_TABLE_URL` | Backend (auth + game data), including its `SERVICE_PREFIX` | `http://localhost/astrogators-table` | `https://astrotable.dynv6.net/astrogators-table` |
+| `VITE_MOD_LEDGER_UI_URL` | Build-arg forwarded by `docker/docker-compose.yml` and `Dockerfile`. Reserved for cross-app link configuration; not yet consumed in `src/`. | `http://localhost/mod-ledger/` | `https://astrotable.dynv6.net/mod-ledger/` |
 
 When adding a new variable, update `.env.example` and the consumer together.
 
@@ -76,6 +77,19 @@ Protected (redirects to `/login` when unauthenticated):
 - `/profile` — account info + ally-code management
 
 Unknown paths redirect to `/`.
+
+### Cross-app links
+
+The landing page (`src/pages/HomePage.tsx`) lists sibling apps in the
+ecosystem. Each entry navigates to a sibling submodule served from the same
+origin via the workspace nginx — no `target="_blank"`, since auth state is
+already shared:
+
+- **Mod Ledger** → `/mod-ledger/` (`mod-ledger-ui` submodule)
+- **Nightwatcher** → `/nightwatcher/` (`nightwatcher-ui` submodule)
+- **Navicharts** → `/navicharts` (planned)
+
+Tone rules in `CLAUDE.md` apply to the descriptions in that array.
 
 ## Project layout
 
