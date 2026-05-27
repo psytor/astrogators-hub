@@ -22,6 +22,15 @@ export default function VerifyEmailPage() {
   }, [authEnabled, isLoadingFeatures, navigate]);
 
   useEffect(() => {
+    // Wait for AuthProvider to finish initializing the shared apiClient.
+    // The provider calls initializeApiClient in its own useEffect, which
+    // (per React's effect ordering) runs AFTER child effects on mount —
+    // so if we called apiClient.post here on the first render, apiClient
+    // would be undefined and throw "Cannot read properties of undefined
+    // (reading 'post')". isLoadingFeatures flipping to false signals
+    // that the init has happened (the features fetch uses apiClient).
+    if (isLoadingFeatures) return;
+
     const verifyEmail = async () => {
       if (!token) {
         setError('Invalid or missing verification token');
@@ -40,7 +49,7 @@ export default function VerifyEmailPage() {
     };
 
     verifyEmail();
-  }, [token]);
+  }, [token, isLoadingFeatures]);
 
   if (isLoadingFeatures) {
     return (
