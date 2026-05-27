@@ -54,8 +54,6 @@ export default function RegisterPage() {
     try {
       await register({ email, username, password, password_confirm: confirmPassword });
       setSuccess(true);
-      // Redirect to login after 3 seconds
-      setTimeout(() => navigate('/login'), 3000);
     } catch (err: any) {
       setError(err.message || 'Registration failed. Please try again.');
     } finally {
@@ -70,13 +68,17 @@ export default function RegisterPage() {
           <Card chamfered chamferSize="md" padding="lg" className="auth-card">
             <h1 className="auth-title">Registration Successful!</h1>
             <p className="auth-subtitle">
-              Please check your email to verify your account. You will be redirected to the
-              login page shortly.
+              Please check your email to verify your account before logging in.
               <br />
               <br />
               <strong>Don't see it?</strong> Check your spam or junk folder — our emails
               sometimes land there.
             </p>
+            <Link to="/login">
+              <Button variant="primary" size="lg" fullWidth>
+                Back to Login
+              </Button>
+            </Link>
           </Card>
         </div>
       </Layout>
