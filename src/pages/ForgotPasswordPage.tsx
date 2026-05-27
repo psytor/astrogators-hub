@@ -55,6 +55,10 @@ export default function ForgotPasswordPage() {
             <p className="auth-subtitle">
               We've sent a password reset link to <strong>{email}</strong>. Please check your
               inbox and follow the instructions to reset your password.
+              <br />
+              <br />
+              <strong>Don't see it?</strong> Check your spam or junk folder — our emails
+              sometimes land there.
             </p>
             <Link to="/login">
               <Button variant="primary" size="lg" fullWidth>

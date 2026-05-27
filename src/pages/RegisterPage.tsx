@@ -72,6 +72,10 @@ export default function RegisterPage() {
             <p className="auth-subtitle">
               Please check your email to verify your account. You will be redirected to the
               login page shortly.
+              <br />
+              <br />
+              <strong>Don't see it?</strong> Check your spam or junk folder — our emails
+              sometimes land there.
             </p>
           </Card>
         </div>

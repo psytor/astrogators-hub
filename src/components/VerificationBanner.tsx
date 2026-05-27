@@ -32,7 +32,8 @@ export function VerificationBanner() {
       <div className="verification-banner-content">
         <div className="verification-banner-icon">⚠️</div>
         <div className="verification-banner-text">
-          <strong>Email not verified.</strong> Please check your email for a verification link.
+          <strong>Email not verified.</strong> Please check your email for a verification link —
+          including your spam or junk folder.
           {message && <div className="verification-banner-message">{message}</div>}
         </div>
         <div className="verification-banner-actions">
