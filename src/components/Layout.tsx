@@ -1,5 +1,4 @@
-import { Link, useNavigate } from 'react-router-dom';
-import { TopBar, Container, Footer, Button, AllyCodeDropdown, useAuth } from 'astrogators-shared-ui';
+import { NavBar, Container, Footer } from 'astrogators-shared-ui';
 import { VerificationBanner } from './VerificationBanner';
 import { AllyCodeMigrationBanner } from './AllyCodeMigrationBanner';
 
@@ -8,51 +7,11 @@ interface LayoutProps {
 }
 
 export function Layout({ children }: LayoutProps) {
-  const { user, isAuthenticated, logout, authEnabled } = useAuth();
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    logout();
-    navigate('/');
-  };
-
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-      <TopBar
-        logo={
-          <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>
-            The Astrogator's Table
-          </Link>
-        }
-        rightContent={
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-            <AllyCodeDropdown />
-            {isAuthenticated ? (
-              <>
-                <Link to="/profile" style={{ color: 'var(--color-text-secondary)' }}>
-                  {user?.username}
-                </Link>
-                <Button variant="ghost" size="sm" onClick={handleLogout}>
-                  Logout
-                </Button>
-              </>
-            ) : authEnabled ? (
-              <div style={{ display: 'flex', gap: '0.5rem' }}>
-                <Link to="/login">
-                  <Button variant="ghost" size="sm">
-                    Login
-                  </Button>
-                </Link>
-                <Link to="/register">
-                  <Button variant="primary" size="sm">
-                    Sign Up
-                  </Button>
-                </Link>
-              </div>
-            ) : null}
-          </div>
-        }
-      />
+      {/* Hub is the suite landing page: the logo is the identity, so no appName
+          and no section tabs. NavBar bakes in the ally dropdown + auth cluster. */}
+      <NavBar hubUrl="/" showAllyCode />
       <VerificationBanner />
       <AllyCodeMigrationBanner />
       <main style={{ flex: 1 }}>
