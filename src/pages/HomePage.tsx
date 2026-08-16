@@ -33,6 +33,20 @@ const applications: Application[] = [
     ],
   },
   {
+    id: 'navicharts',
+    name: 'Navicharts',
+    description: 'Interactive farming roadmaps and progress tracking. Plan your character development, track farming progress, and optimize your galactic conquest strategy.',
+    status: 'available',
+    route: '/navicharts/',
+    icon: Map,
+    iconColor: '#6b7280',
+    features: [
+      'Interactive farming roadmaps',
+      'Progress tracking & analytics',
+      'Galactic Conquest optimization',
+    ],
+  },
+  {
     id: 'nightwatcher',
     name: 'Nightwatcher',
     description: 'A Discord bot that audits your SWGOH guild\'s daily tickets so officers don\'t have to. Quiet, roster-aware, and ready to invite.',
@@ -46,20 +60,6 @@ const applications: Application[] = [
       'Officer-friendly digests',
     ],
     cta: 'Visit',
-  },
-  {
-    id: 'navicharts',
-    name: 'Navicharts',
-    description: 'Interactive farming roadmaps and progress tracking. Plan your character development, track farming progress, and optimize your galactic conquest strategy.',
-    status: 'coming-soon',
-    route: '/navicharts',
-    icon: Map,
-    iconColor: '#6b7280',
-    features: [
-      'Interactive farming roadmaps',
-      'Progress tracking & analytics',
-      'Galactic Conquest optimization',
-    ],
   },
 ];
 
