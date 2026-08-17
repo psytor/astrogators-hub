@@ -35,15 +35,15 @@ const applications: Application[] = [
   {
     id: 'navicharts',
     name: 'Navicharts',
-    description: 'Interactive farming roadmaps and progress tracking. Plan your character development, track farming progress, and optimize your galactic conquest strategy.',
+    description: 'Interactive farming roadmaps with progress tracking against your synced roster. Charts can be kept private, shared with your guild or by link, or browsed from the admin-curated library.',
     status: 'available',
     route: '/navicharts/',
     icon: Map,
     iconColor: '#6b7280',
     features: [
       'Interactive farming roadmaps',
-      'Progress tracking & analytics',
-      'Galactic Conquest optimization',
+      'Progress tracking against your roster',
+      'Private, guild, link, or curated sharing',
     ],
   },
   {
