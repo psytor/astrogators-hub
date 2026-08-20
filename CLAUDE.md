@@ -25,8 +25,8 @@ and auth UI** for the Astrogator's Table ecosystem:
 
 It consumes:
 
-- **`astrogators-shared-ui`** (npm package, `^0.6.0`) — shared components,
-  `AuthProvider`, API client, auth/ally-code storage helpers
+- **`astrogators-shared-ui`** (npm package, `^0.10.4`) — shared components,
+  `AuthProvider`, API client, auth/ally-code storage helpers, `NavBar`
 - **`astrogators-table`** backend — all auth and ally-code endpoints. URL
   comes from `VITE_ASTROGATORS_TABLE_URL` at build time
 
@@ -136,6 +136,13 @@ compose's network.
 second API client, a second auth context, or bespoke JWT handling. If the
 shared lib is missing something, extend it there and cut a new shared-ui
 release — do not reimplement.
+
+**Chrome is `NavBar`, not a hand-composed `TopBar`.** `Layout.tsx` renders
+`<NavBar hubUrl="/" showAllyCode />` — no `appName` and no section tabs,
+since the hub's logo already is the site identity and NavBar bakes in the
+ally-code dropdown and the auth cluster (login/register or user menu). Do
+not go back to composing `TopBar` + `AllyCodeDropdown` + auth links by hand
+here; that was the old pattern before `NavBar` became the suite standard.
 
 **Routes are declarative.** This app uses `<Routes>` / `<Route>` /
 `<Navigate>` from `react-router-dom@7`, not the data-router APIs
