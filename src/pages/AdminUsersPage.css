@@ -1,0 +1,85 @@
+.admin-users-page {
+  padding: var(--spacing-3xl) 0;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.admin-users-title {
+  font-size: var(--font-size-3xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-text-primary);
+  margin-bottom: var(--spacing-xl);
+}
+
+.admin-users-card {
+  margin-bottom: var(--spacing-xl);
+}
+
+.admin-users-search {
+  margin-bottom: var(--spacing-lg);
+}
+
+.admin-users-error-message {
+  padding: var(--spacing-md);
+  background-color: rgba(239, 68, 68, 0.1);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: var(--radius-md);
+  color: var(--color-error);
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--spacing-md);
+}
+
+.admin-users-loading,
+.admin-users-empty {
+  color: var(--color-text-secondary);
+}
+
+.admin-users-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.admin-user-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--spacing-md);
+  padding: var(--spacing-md) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.admin-user-item:last-child {
+  border-bottom: none;
+}
+
+.admin-user-item-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-xs);
+}
+
+.admin-user-item-username {
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text-primary);
+}
+
+.admin-user-item-email {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.admin-user-item-badges {
+  display: flex;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-xs);
+}
+
+.admin-user-item-role {
+  min-width: 140px;
+}
+
+.admin-users-total {
+  margin-top: var(--spacing-lg);
+  color: var(--color-text-secondary);
+  font-size: var(--font-size-sm);
+}

@@ -138,11 +138,23 @@ shared lib is missing something, extend it there and cut a new shared-ui
 release — do not reimplement.
 
 **Chrome is `NavBar`, not a hand-composed `TopBar`.** `Layout.tsx` renders
-`<NavBar hubUrl="/" showAllyCode />` — no `appName` and no section tabs,
-since the hub's logo already is the site identity and NavBar bakes in the
-ally-code dropdown and the auth cluster (login/register or user menu). Do
-not go back to composing `TopBar` + `AllyCodeDropdown` + auth links by hand
-here; that was the old pattern before `NavBar` became the suite standard.
+`<NavBar hubUrl="/" showAllyCode navItems={navItems} />` — no `appName` and
+no section tabs, since the hub's logo already is the site identity and
+NavBar bakes in the ally-code dropdown and the auth cluster (login/register
+or user menu). Do not go back to composing `TopBar` + `AllyCodeDropdown` +
+auth links by hand here; that was the old pattern before `NavBar` became
+the suite standard. `navItems` is built conditionally in `Layout.tsx` from
+`useAuth().user.role` — currently just an "Admin" link shown to
+`role === 'admin'` only, linking to `/admin/users`.
+
+**Admin user management** (`/admin/users`, `AdminUsersPage.tsx`, guarded by
+`App.tsx`'s `AdminRoute`) is deliberately admin-exclusive, not admin-or-mod
+— it's the one place a mod must never reach, since it can change anyone's
+role including its own. It calls astrogators-table's `GET /api/v1/users`
+and `PATCH /api/v1/users/{id}/role` directly via the shared `apiClient`
+(no hub-specific backend proxy). This is now the only supported way to
+change an existing user's role — `astrogators-table/scripts/create_admin.py`
+still exists but only ever creates brand-new accounts, never edits one.
 
 **Routes are declarative.** This app uses `<Routes>` / `<Route>` /
 `<Navigate>` from `react-router-dom@7`, not the data-router APIs
