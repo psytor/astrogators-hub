@@ -39,7 +39,7 @@ const applications: Application[] = [
     status: 'available',
     route: '/navicharts/',
     icon: Map,
-    iconColor: '#6b7280',
+    iconColor: '#3b82f6',
     features: [
       'Interactive farming roadmaps',
       'Progress tracking against your roster',
