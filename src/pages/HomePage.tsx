@@ -109,10 +109,9 @@ export default function HomePage() {
                     chamfered
                     chamferSize="lg"
                     showDiagonalBorders
-                    diagonalBorderColor={borderColor}
+                    edgeColor={borderColor}
                     padding="none"
                     className="app-card"
-                    style={{ '--border-color': borderColor } as React.CSSProperties}
                   >
                     {/* Icon and Title */}
                     <div className="app-card-header">

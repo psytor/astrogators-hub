@@ -125,7 +125,8 @@
   position: relative;
   background: rgba(17, 24, 39, 0.8); /* bg-gray-900/80 */
   backdrop-filter: blur(8px);
-  border: 1px solid var(--border-color, var(--color-border));
+  /* Outline (border + corner lines) is drawn by the Card from edgeColor
+     ({borderColor}); `transition: all` still animates the hover colour swap. */
   padding: var(--spacing-2xl);
   transition: all 300ms;
   text-align: left;
