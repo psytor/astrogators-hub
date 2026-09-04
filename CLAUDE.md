@@ -36,7 +36,7 @@ browser storage (handled by shared-ui).
 ## Single-origin rule (read before touching URLs)
 
 The hub, `mod-ledger-ui`, and both backends are served from **one origin**
-in both dev and prod — `http://localhost/` in dev, `https://astrotable.dynv6.net/`
+in both dev and prod — `http://localhost/` in dev, `https://astrotable.org/`
 in prod. The workspace nginx reverse proxy (at the workspace root, not in
 this submodule) fronts every request and dumb-proxies each prefix to the
 right backend or frontend.
@@ -176,7 +176,7 @@ Current vars:
 - `VITE_ASTROGATORS_TABLE_URL` — full URL including the backend's
   `SERVICE_PREFIX`, routed through the workspace nginx. Dev:
   `http://localhost/astrogators-table`. Prod:
-  `https://astrotable.dynv6.net/astrogators-table`.
+  `https://astrotable.org/astrogators-table`.
 - `VITE_MOD_LEDGER_UI_URL` — forwarded as a build-arg by
   `docker/docker-compose.yml` and `Dockerfile` for future cross-app link
   use. Not currently read in `src/` (cross-app routes in

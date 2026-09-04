@@ -26,7 +26,7 @@ The hub, `mod-ledger-ui`, and both backends are served from one origin in
 both dev and prod, fronted by the workspace nginx reverse proxy:
 
 - Dev: `http://localhost/`
-- Prod: `https://astrotable.dynv6.net/`
+- Prod: `https://astrotable.org/`
 
 Every `VITE_*_URL` points through that proxy. Direct-port URLs
 (e.g. `http://localhost:8000/...`) are not supported — they would break
@@ -49,8 +49,8 @@ forwards them via `--build-arg` (see `docker/docker-compose.yml`).
 
 | Variable | Purpose | Dev | Prod |
 |---|---|---|---|
-| `VITE_ASTROGATORS_TABLE_URL` | Backend (auth + game data), including its `SERVICE_PREFIX` | `http://localhost/astrogators-table` | `https://astrotable.dynv6.net/astrogators-table` |
-| `VITE_MOD_LEDGER_UI_URL` | Build-arg forwarded by `docker/docker-compose.yml` and `Dockerfile`. Reserved for cross-app link configuration; not yet consumed in `src/`. | `http://localhost/mod-ledger/` | `https://astrotable.dynv6.net/mod-ledger/` |
+| `VITE_ASTROGATORS_TABLE_URL` | Backend (auth + game data), including its `SERVICE_PREFIX` | `http://localhost/astrogators-table` | `https://astrotable.org/astrogators-table` |
+| `VITE_MOD_LEDGER_UI_URL` | Build-arg forwarded by `docker/docker-compose.yml` and `Dockerfile`. Reserved for cross-app link configuration; not yet consumed in `src/`. | `http://localhost/mod-ledger/` | `https://astrotable.org/mod-ledger/` |
 
 When adding a new variable, update `.env.example` and the consumer together.
 
