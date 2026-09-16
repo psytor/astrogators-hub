@@ -29,13 +29,23 @@ RUN rm -rf /usr/share/nginx/html/* /etc/nginx/conf.d/default.conf
 
 # Minimal SPA config: fall back to index.html for client-side routes.
 # Listens on 4173 so it can coexist with the workspace reverse proxy on :80.
+# Client-side routes never contain a dot in their last path segment - only
+# real static assets do. Falling back to index.html for a dotted path too
+# means every vulnerability-scanner probe (/.env, /.git/config, wp-login.php,
+# etc. - constant background noise on any public IP) gets a 200 instead of a
+# 404, even though nothing is actually served: the response is just the SPA
+# shell, same size every time. Not a data leak, but it's worth 404ing those
+# so scan tools/log review can tell "not found" from "app responded".
 RUN printf '%s\n' \
     'server {' \
     '  listen 4173;' \
     '  server_name _;' \
     '  root /usr/share/nginx/html;' \
     '  index index.html;' \
-    '  location / { try_files $uri $uri/ /index.html; }' \
+    '  location / {' \
+    '    location ~ \.\w+$ { try_files $uri =404; }' \
+    '    try_files $uri $uri/ /index.html;' \
+    '  }' \
     '}' > /etc/nginx/conf.d/astrogators-hub.conf
 
 COPY --from=builder /app/dist /usr/share/nginx/html
