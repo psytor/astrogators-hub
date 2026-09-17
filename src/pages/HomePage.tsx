@@ -50,7 +50,7 @@ const applications: Application[] = [
     id: 'nightwatcher',
     name: 'Nightwatcher',
     description: 'A Discord bot that audits your SWGOH guild\'s daily tickets so officers don\'t have to. Quiet, roster-aware, and ready to invite.',
-    status: 'coming-soon',
+    status: 'available',
     route: '/nightwatcher/',
     iconImage: '/assets/images/nightwatcher.png',
     iconColor: '#5865f2',
