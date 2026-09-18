@@ -25,7 +25,7 @@ and auth UI** for the Astrogator's Table ecosystem:
 
 It consumes:
 
-- **`astrogators-shared-ui`** (npm package, `^0.10.4`) — shared components,
+- **`astrogators-shared-ui`** (npm package, `^0.16.0`) — shared components,
   `AuthProvider`, API client, auth/ally-code storage helpers, `NavBar`
 - **`astrogators-table`** backend — all auth and ally-code endpoints. URL
   comes from `VITE_ASTROGATORS_TABLE_URL` at build time
@@ -138,14 +138,16 @@ shared lib is missing something, extend it there and cut a new shared-ui
 release — do not reimplement.
 
 **Chrome is `NavBar`, not a hand-composed `TopBar`.** `Layout.tsx` renders
-`<NavBar hubUrl="/" showAllyCode navItems={navItems} />` — no `appName` and
-no section tabs, since the hub's logo already is the site identity and
-NavBar bakes in the ally-code dropdown and the auth cluster (login/register
-or user menu). Do not go back to composing `TopBar` + `AllyCodeDropdown` +
-auth links by hand here; that was the old pattern before `NavBar` became
-the suite standard. `navItems` is built conditionally in `Layout.tsx` from
-`useAuth().user.role` — currently just an "Admin" link shown to
-`role === 'admin'` only, linking to `/admin/users`.
+`<NavBar currentApp="hub" />` — nothing else. Since shared-ui 0.16.0, NavBar's
+entire contents (which apps show a dropdown trigger, what's in it, the
+ally-code dropdown, the Admin link, the login/logout cluster) come from the
+`SUITE_NAV` manifest and `useAuth` inside shared-ui itself — hub does not
+build a `navItems` array, does not pass `hubUrl`/`showAllyCode`, and has no
+per-app props to hand it at all. The Admin link (`role === 'admin'`) is now
+automatic in every app's NavBar, not something hub opts into. Do not go back
+to composing `TopBar` + `AllyCodeDropdown` + auth links by hand, and do not
+reintroduce a `navItems`-style prop here — see `astrogators-shared-ui`'s
+`CLAUDE.md` NavBar note for why that capability was removed on purpose.
 
 **Admin user management** (`/admin/users`, `AdminUsersPage.tsx`, guarded by
 `App.tsx`'s `AdminRoute`) is deliberately admin-exclusive, not admin-or-mod
