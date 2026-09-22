@@ -74,7 +74,20 @@
   margin-top: var(--spacing-xs);
 }
 
-.admin-user-item-role {
+.admin-user-item-you {
+  font-weight: var(--font-weight-normal);
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
+
+.admin-user-item-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  flex-shrink: 0;
+}
+
+.admin-user-item-actions > :first-child {
   min-width: 140px;
 }
 
@@ -82,4 +95,19 @@
   margin-top: var(--spacing-lg);
   color: var(--color-text-secondary);
   font-size: var(--font-size-sm);
+}
+
+@media (max-width: 640px) {
+  .admin-user-item {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .admin-user-item-actions {
+    flex-wrap: wrap;
+  }
+
+  .admin-user-item-actions > :first-child {
+    min-width: 100%;
+  }
 }
