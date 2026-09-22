@@ -78,48 +78,32 @@
   font-size: var(--font-size-sm);
 }
 
-.profile-actions {
-  display: flex;
-  flex-direction: column;
-  gap: var(--spacing-sm);
+/* Security section: change email/password, sign-out-everywhere */
+.security-subsection {
+  padding-top: var(--spacing-lg);
+  border-top: 1px solid var(--color-border);
 }
 
-.profile-action-link {
-  color: var(--color-primary);
-  text-decoration: none;
-  font-weight: var(--font-weight-medium);
-  transition: all var(--transition-base);
-  display: inline-flex;
-  align-items: center;
+.security-subsection:first-of-type {
+  padding-top: 0;
+  border-top: none;
 }
 
-.profile-action-link:hover {
-  color: var(--color-primary-hover);
-  transform: translateX(4px);
-}
-
-.profile-links {
+.security-form {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-md);
+  max-width: 420px;
 }
 
-.profile-link-button {
-  display: block;
-  padding: var(--spacing-md) var(--spacing-lg);
-  background-color: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  color: var(--color-primary);
-  font-weight: var(--font-weight-medium);
-  text-decoration: none;
-  transition: all var(--transition-base);
+.security-note {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  font-style: italic;
 }
 
-.profile-link-button:hover {
-  background-color: var(--color-background-hover);
-  border-color: var(--color-primary);
-  transform: translateX(4px);
+.security-subsection-danger {
+  border-top-color: rgba(234, 67, 53, 0.3);
 }
 
 /* Ally code management styles */

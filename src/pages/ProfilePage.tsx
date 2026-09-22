@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { Card, Badge, Button, Input, useAuth, formatAllyCode } from 'astrogators-shared-ui';
 import { Layout } from '../components/Layout';
 import './ProfilePage.css';
@@ -13,7 +12,9 @@ export default function ProfilePage() {
     removeAllyCode,
     selectAllyCode,
     selectedAllyCode,
-    isLoadingAllyCodes
+    isLoadingAllyCodes,
+    updateAccount,
+    logoutAll,
   } = useAuth();
   const [resending, setResending] = useState(false);
   const [resendMessage, setResendMessage] = useState('');
@@ -24,6 +25,24 @@ export default function ProfilePage() {
   const [allyCodeError, setAllyCodeError] = useState('');
   const [allyCodeSuccess, setAllyCodeSuccess] = useState('');
   const [addingAllyCode, setAddingAllyCode] = useState(false);
+
+  // Change email
+  const [newEmail, setNewEmail] = useState('');
+  const [emailPassword, setEmailPassword] = useState('');
+  const [emailChanging, setEmailChanging] = useState(false);
+  const [emailError, setEmailError] = useState('');
+  const [emailSuccess, setEmailSuccess] = useState('');
+
+  // Change password
+  const [currentPassword, setCurrentPassword] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmNewPassword, setConfirmNewPassword] = useState('');
+  const [passwordChanging, setPasswordChanging] = useState(false);
+  const [passwordError, setPasswordError] = useState('');
+  const [passwordSuccess, setPasswordSuccess] = useState('');
+
+  // Sign out everywhere
+  const [signingOutAll, setSigningOutAll] = useState(false);
 
   if (!user) {
     return null;
@@ -85,6 +104,68 @@ export default function ProfilePage() {
     selectAllyCode(allyCode);
     setAllyCodeSuccess('Ally code set as active!');
     setTimeout(() => setAllyCodeSuccess(''), 2000);
+  };
+
+  const handleChangeEmail = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setEmailError('');
+    setEmailSuccess('');
+    setEmailChanging(true);
+
+    try {
+      await updateAccount({ email: newEmail, current_password: emailPassword });
+      setEmailSuccess('Email updated. Check your inbox to verify the new address.');
+      setNewEmail('');
+      setEmailPassword('');
+    } catch (err: any) {
+      setEmailError(err.message || 'Failed to update email');
+    } finally {
+      setEmailChanging(false);
+    }
+  };
+
+  const handleChangePassword = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setPasswordError('');
+    setPasswordSuccess('');
+
+    if (newPassword !== confirmNewPassword) {
+      setPasswordError('New passwords do not match');
+      return;
+    }
+
+    setPasswordChanging(true);
+
+    try {
+      await updateAccount({ current_password: currentPassword, new_password: newPassword });
+      setPasswordSuccess('Password updated.');
+      setCurrentPassword('');
+      setNewPassword('');
+      setConfirmNewPassword('');
+    } catch (err: any) {
+      setPasswordError(err.message || 'Failed to update password');
+    } finally {
+      setPasswordChanging(false);
+    }
+  };
+
+  const handleLogoutAll = async () => {
+    const confirmed = window.confirm(
+      'Sign out of all devices? Every other browser and app session signed in to this account will be signed out too, including this one.'
+    );
+    if (!confirmed) return;
+
+    setSigningOutAll(true);
+    try {
+      await logoutAll();
+    } catch {
+      // AuthContext.logoutAll() always finishes the LOCAL sign-out itself
+      // (its own try/finally) even when the server request fails - there is
+      // nothing more useful to show the user here than just completing the
+      // redirect below.
+    } finally {
+      window.location.href = '/';
+    }
   };
 
   return (
@@ -224,24 +305,87 @@ export default function ProfilePage() {
           <div className="profile-section">
             <h2 className="profile-section-title">Security</h2>
             <p className="profile-section-description">Manage your account security settings</p>
-            <div className="profile-actions">
-              <Link to="/forgot-password" className="profile-action-link">
-                Reset Password →
-              </Link>
-            </div>
-          </div>
-        </Card>
 
-        <Card chamfered chamferSize="md" padding="lg" className="profile-card">
-          <div className="profile-section">
-            <h2 className="profile-section-title">Quick Links</h2>
-            <p className="profile-section-description">
-              Access the applications available to you
+            <div className="security-subsection">
+              <h3 className="ally-code-subsection-title">Change Email</h3>
+              <form className="security-form" onSubmit={handleChangeEmail}>
+                <Input
+                  label="New Email"
+                  type="email"
+                  value={newEmail}
+                  onChange={(e) => setNewEmail(e.target.value)}
+                  placeholder="Enter new email address"
+                  required
+                  fullWidth
+                />
+                <Input
+                  label="Current Password"
+                  type="password"
+                  value={emailPassword}
+                  onChange={(e) => setEmailPassword(e.target.value)}
+                  placeholder="Confirm with your current password"
+                  required
+                  fullWidth
+                />
+                {emailError && <div className="profile-error-message">{emailError}</div>}
+                {emailSuccess && <div className="profile-success-message">{emailSuccess}</div>}
+                <Button type="submit" variant="secondary" size="md" loading={emailChanging}>
+                  Update Email
+                </Button>
+              </form>
+            </div>
+
+            <div className="security-subsection">
+              <h3 className="ally-code-subsection-title">Change Password</h3>
+              <form className="security-form" onSubmit={handleChangePassword}>
+                <Input
+                  label="Current Password"
+                  type="password"
+                  value={currentPassword}
+                  onChange={(e) => setCurrentPassword(e.target.value)}
+                  placeholder="Enter your current password"
+                  required
+                  fullWidth
+                />
+                <Input
+                  label="New Password"
+                  type="password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  placeholder="Upper + lower case, a number, a symbol, 8+ characters"
+                  required
+                  fullWidth
+                />
+                <Input
+                  label="Confirm New Password"
+                  type="password"
+                  value={confirmNewPassword}
+                  onChange={(e) => setConfirmNewPassword(e.target.value)}
+                  placeholder="Repeat the new password"
+                  required
+                  fullWidth
+                />
+                {passwordError && <div className="profile-error-message">{passwordError}</div>}
+                {passwordSuccess && <div className="profile-success-message">{passwordSuccess}</div>}
+                <Button type="submit" variant="secondary" size="md" loading={passwordChanging}>
+                  Update Password
+                </Button>
+              </form>
+            </div>
+
+            <p className="security-note">
+              Changing your email or password signs out every other device using this account —
+              this one keeps working.
             </p>
-            <div className="profile-links">
-              <a href="/mod-ledger" className="profile-link-button">
-                The Mod Ledger →
-              </a>
+
+            <div className="security-subsection security-subsection-danger">
+              <h3 className="ally-code-subsection-title">Sign Out Everywhere</h3>
+              <p className="profile-section-description">
+                Immediately sign out this account on every device and browser, including this one.
+              </p>
+              <Button variant="outline" size="md" onClick={handleLogoutAll} loading={signingOutAll}>
+                Sign Out of All Devices
+              </Button>
             </div>
           </div>
         </Card>
