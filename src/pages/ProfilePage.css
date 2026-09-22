@@ -175,6 +175,14 @@
 .ally-code-item-info {
   display: flex;
   flex-direction: column;
+  /* A column flex container defaults align-items to stretch, which was
+     forcing the "Active" Badge to fill the full width - a flex item with no
+     intrinsic width of its own has nothing to stop it stretching to match
+     its siblings (the code/name text divs, where "full width" is invisible
+     since they're just left-aligned text). The badge's own pill background
+     made that stretch obvious as a big solid green bar. flex-start keeps
+     every child sized to its own content. */
+  align-items: flex-start;
   gap: var(--spacing-xs);
   flex: 1;
 }
