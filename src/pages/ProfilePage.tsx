@@ -389,20 +389,6 @@ export default function ProfilePage() {
             </div>
           </div>
         </Card>
-
-        <Card chamfered chamferSize="md" padding="lg" className="profile-card">
-          <div className="profile-section">
-            <h2 className="profile-section-title">Quick Links</h2>
-            <p className="profile-section-description">
-              Access the applications available to you
-            </p>
-            <div className="profile-links">
-              <a href="/mod-ledger" className="profile-link-button">
-                The Mod Ledger →
-              </a>
-            </div>
-          </div>
-        </Card>
       </div>
     </Layout>
   );
