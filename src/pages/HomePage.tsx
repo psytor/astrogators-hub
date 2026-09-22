@@ -202,25 +202,6 @@ export default function HomePage() {
               );
             })}
           </div>
-
-          {/* Get Started Section */}
-          <div className="get-started-section">
-            <h2 className="get-started-title">Get Started in Seconds</h2>
-            <div className="get-started-steps">
-              <div className="step">
-                <div className="step-number">1</div>
-                <span className="step-text">Enter your ally code</span>
-              </div>
-              <div className="step">
-                <div className="step-number">2</div>
-                <span className="step-text">Choose evaluation settings</span>
-              </div>
-              <div className="step">
-                <div className="step-number">3</div>
-                <span className="step-text">Get instant recommendations</span>
-              </div>
-            </div>
-          </div>
         </div>
       </div>
     </Layout>

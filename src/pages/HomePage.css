@@ -276,51 +276,6 @@
   margin-left: var(--spacing-sm);
 }
 
-/* ========== GET STARTED SECTION ========== */
-
-.get-started-section {
-  max-width: 700px;
-  margin: 0 auto;
-}
-
-.get-started-title {
-  font-size: var(--font-size-2xl);
-  font-weight: var(--font-weight-bold);
-  font-family: var(--font-heading);
-  color: var(--color-primary);
-  margin-bottom: var(--spacing-lg);
-}
-
-.get-started-steps {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: var(--spacing-md);
-}
-
-.step {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-}
-
-.step-number {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  background-color: var(--color-primary);
-  border-radius: var(--radius-full);
-  color: white;
-  font-weight: var(--font-weight-bold);
-  flex-shrink: 0;
-}
-
-.step-text {
-  font-size: var(--font-size-sm);
-  color: var(--color-text-secondary);
-}
-
 /* ========== RESPONSIVE ========== */
 
 @media (max-width: 768px) {
@@ -335,10 +290,6 @@
   .app-grid {
     grid-template-columns: 1fr;
     gap: var(--spacing-lg);
-  }
-
-  .get-started-steps {
-    grid-template-columns: 1fr;
   }
 
   .app-card {
