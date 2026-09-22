@@ -14,7 +14,7 @@ interface Application {
   iconImage?: string;
   iconColor: string;
   features: string[];
-  cta?: string;
+  cta: string;
 }
 
 const applications: Application[] = [
@@ -31,6 +31,7 @@ const applications: Application[] = [
       'Share a rule set by link, or use ones already published',
       'Slicing advice with a quality rating per mod',
     ],
+    cta: 'Start Evaluating',
   },
   {
     id: 'navicharts',
@@ -45,6 +46,7 @@ const applications: Application[] = [
       'Private, guild, link, or curated sharing',
       'Save example squads for each stage of the plan',
     ],
+    cta: 'Start Planning',
   },
   {
     id: 'nightwatcher',
@@ -53,13 +55,13 @@ const applications: Application[] = [
     status: 'available',
     route: '/nightwatcher/',
     iconImage: '/assets/images/nightwatcher.png',
-    iconColor: '#5865f2',
+    iconColor: '#3b82f6',
     features: [
       'Two snapshots a day, before and after your guild\'s reset',
       'A Discord report on who passed and who didn\'t',
       'Optional weekly/monthly summaries and excused-leave tracking',
     ],
-    cta: 'Visit',
+    cta: 'View Guide',
   },
 ];
 
@@ -170,7 +172,7 @@ export default function HomePage() {
                           size="lg"
                           className="app-button"
                         >
-                          {app.cta || 'Start Evaluating'}
+                          {app.cta}
                           <ArrowRight className="button-icon" />
                         </Button>
                       </a>
