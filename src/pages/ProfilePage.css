@@ -163,9 +163,15 @@
   transition: all var(--transition-base);
 }
 
-.ally-code-item.active {
-  border-color: var(--color-success);
-  background-color: rgba(34, 197, 94, 0.05);
+.ally-code-item.default {
+  /* Sapphire (--color-secondary), not green: green already means
+     "account/email is in a good state" elsewhere on this page (Verified,
+     Account Status). This is a neutral "this is the one apps use
+     automatically" marker, not a status judgement, so it gets the
+     secondary-action accent colour instead - the same sapphire as the
+     "Set Default" button and every other variant="secondary" control. */
+  border-color: var(--color-secondary);
+  background-color: rgba(15, 82, 186, 0.05);
 }
 
 .ally-code-item:hover {
@@ -175,21 +181,32 @@
 .ally-code-item-info {
   display: flex;
   flex-direction: column;
+  /* A column flex container defaults align-items to stretch, which was
+     forcing the "Active" Badge to fill the full width - a flex item with no
+     intrinsic width of its own has nothing to stop it stretching to match
+     its siblings (the code/name text divs, where "full width" is invisible
+     since they're just left-aligned text). The badge's own pill background
+     made that stretch obvious as a big solid green bar. flex-start keeps
+     every child sized to its own content. */
+  align-items: flex-start;
   gap: var(--spacing-xs);
   flex: 1;
 }
 
-.ally-code-item-code {
-  font-family: monospace;
+.ally-code-item-name {
+  /* The prominent line now - a player recognizes their account by name, not
+     by a 9-digit number, so the name gets the size/weight/colour treatment
+     the ally code used to have. */
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
   color: var(--color-text-primary);
-  letter-spacing: 0.05em;
 }
 
-.ally-code-item-name {
+.ally-code-item-code {
+  font-family: monospace;
   font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
+  letter-spacing: 0.05em;
 }
 
 .ally-code-item-actions {

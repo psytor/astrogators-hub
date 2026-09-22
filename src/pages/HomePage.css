@@ -49,7 +49,7 @@
 /* ========== HERO SECTION ========== */
 
 .home-hero {
-  margin-bottom: var(--spacing-3xl);
+  margin-bottom: var(--spacing-2xl);
 }
 
 .home-title {
@@ -74,7 +74,11 @@
 
 .app-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  /* 300px, not the old 350px: three cards need 3*300 + 2*gap <= the 1024px
+     max-width below to land on one row. At 350px the third card (Nightwatcher)
+     had nowhere to fit and dropped alone onto its own row, left-aligned with
+     a large empty gap beside it. */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: var(--spacing-xl);
   max-width: 1024px;
   margin: 0 auto var(--spacing-3xl);
@@ -123,11 +127,14 @@
 
 .app-card {
   position: relative;
-  background: rgba(17, 24, 39, 0.8); /* bg-gray-900/80 */
+  background: rgba(17, 24, 39, 0.5); /* was /80 - more of the background shows through */
   backdrop-filter: blur(8px);
   /* Outline (border + corner lines) is drawn by the Card from edgeColor
      ({borderColor}); `transition: all` still animates the hover colour swap. */
-  padding: var(--spacing-2xl);
+  /* spacing-xl (32px), not the old spacing-2xl (48px) - that was double the
+     design system's own default card padding (--card-padding: spacing-lg,
+     24px) and made every card noticeably bulkier than it needed to be. */
+  padding: var(--spacing-xl);
   transition: all 300ms;
   text-align: left;
 }
@@ -269,51 +276,6 @@
   margin-left: var(--spacing-sm);
 }
 
-/* ========== GET STARTED SECTION ========== */
-
-.get-started-section {
-  max-width: 700px;
-  margin: 0 auto;
-}
-
-.get-started-title {
-  font-size: var(--font-size-2xl);
-  font-weight: var(--font-weight-bold);
-  font-family: var(--font-heading);
-  color: var(--color-primary);
-  margin-bottom: var(--spacing-lg);
-}
-
-.get-started-steps {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: var(--spacing-md);
-}
-
-.step {
-  display: flex;
-  align-items: center;
-  gap: var(--spacing-sm);
-}
-
-.step-number {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 32px;
-  height: 32px;
-  background-color: var(--color-primary);
-  border-radius: var(--radius-full);
-  color: white;
-  font-weight: var(--font-weight-bold);
-  flex-shrink: 0;
-}
-
-.step-text {
-  font-size: var(--font-size-sm);
-  color: var(--color-text-secondary);
-}
-
 /* ========== RESPONSIVE ========== */
 
 @media (max-width: 768px) {
@@ -328,10 +290,6 @@
   .app-grid {
     grid-template-columns: 1fr;
     gap: var(--spacing-lg);
-  }
-
-  .get-started-steps {
-    grid-template-columns: 1fr;
   }
 
   .app-card {
