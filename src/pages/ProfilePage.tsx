@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { Link } from 'react-router-dom';
 import { Card, Badge, Button, Input, useAuth, formatAllyCode } from 'astrogators-shared-ui';
 import { Layout } from '../components/Layout';
 import './ProfilePage.css';
@@ -378,15 +377,6 @@ export default function ProfilePage() {
               Changing your email or password signs out every other device using this account —
               this one keeps working.
             </p>
-
-            <div className="security-subsection">
-              <h3 className="ally-code-subsection-title">Forgot your password?</h3>
-              <div className="profile-actions">
-                <Link to="/forgot-password" className="profile-action-link">
-                  Reset Password by Email →
-                </Link>
-              </div>
-            </div>
 
             <div className="security-subsection security-subsection-danger">
               <h3 className="ally-code-subsection-title">Sign Out Everywhere</h3>
