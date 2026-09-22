@@ -21,43 +21,43 @@ const applications: Application[] = [
   {
     id: 'mod-ledger',
     name: 'Mod Ledger',
-    description: 'Intelligent mod evaluation with advanced algorithms. Analyze your entire mod collection, identify keepers, and optimize your roster with data-driven recommendations.',
+    description: 'Sorts your mods into Sell, Upgrade, or Pass. Use your own rules, or start from a set based on established SWGOH modding guides.',
     status: 'available',
     route: '/mod-ledger/',
     icon: Zap,
     iconColor: '#3b82f6',
     features: [
-      'Advanced evaluation algorithms',
-      'Real-time mod processing',
-      'Configurable evaluation rules',
+      'See the reasoning behind every verdict',
+      'Share a rule set by link, or use ones already published',
+      'Slicing advice with a quality rating per mod',
     ],
   },
   {
     id: 'navicharts',
     name: 'Navicharts',
-    description: 'Interactive farming roadmaps with progress tracking against your synced roster. Charts can be kept private, shared with your guild or by link, or browsed from the admin-curated library.',
+    description: 'Farming roadmaps that track your progress against your synced roster. Keep a chart private, share it with your guild or by link, or browse the curated library.',
     status: 'available',
     route: '/navicharts/',
     icon: Map,
     iconColor: '#3b82f6',
     features: [
-      'Interactive farming roadmaps',
-      'Progress tracking against your roster',
+      'Roster-aware — plans build around what you can already unlock',
       'Private, guild, link, or curated sharing',
+      'Save example squads for each stage of the plan',
     ],
   },
   {
     id: 'nightwatcher',
     name: 'Nightwatcher',
-    description: 'A Discord bot that audits your SWGOH guild\'s daily tickets so officers don\'t have to. Quiet, roster-aware, and ready to invite.',
+    description: 'A Discord bot that audits your SWGOH guild\'s daily tickets so officers don\'t have to.',
     status: 'available',
     route: '/nightwatcher/',
     iconImage: '/assets/images/nightwatcher.png',
     iconColor: '#5865f2',
     features: [
-      'Daily ticket auditing',
-      'Roster-aware insights',
-      'Officer-friendly digests',
+      'Two snapshots a day, before and after your guild\'s reset',
+      'A Discord report on who passed and who didn\'t',
+      'Optional weekly/monthly summaries and excused-leave tracking',
     ],
     cta: 'Visit',
   },
@@ -80,7 +80,7 @@ export default function HomePage() {
           <div className="home-hero">
             <h1 className="home-title">The Astrogator's Table</h1>
             <p className="home-subtitle">
-              Advanced SWGOH tools platform for mod evaluation, farming roadmaps, and roster optimization
+              SWGOH tools for mod evaluation, farming roadmaps, and guild auditing
             </p>
           </div>
 

@@ -74,7 +74,11 @@
 
 .app-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+  /* 300px, not the old 350px: three cards need 3*300 + 2*gap <= the 1024px
+     max-width below to land on one row. At 350px the third card (Nightwatcher)
+     had nowhere to fit and dropped alone onto its own row, left-aligned with
+     a large empty gap beside it. */
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: var(--spacing-xl);
   max-width: 1024px;
   margin: 0 auto var(--spacing-3xl);
@@ -127,7 +131,10 @@
   backdrop-filter: blur(8px);
   /* Outline (border + corner lines) is drawn by the Card from edgeColor
      ({borderColor}); `transition: all` still animates the hover colour swap. */
-  padding: var(--spacing-2xl);
+  /* spacing-xl (32px), not the old spacing-2xl (48px) - that was double the
+     design system's own default card padding (--card-padding: spacing-lg,
+     24px) and made every card noticeably bulkier than it needed to be. */
+  padding: var(--spacing-xl);
   transition: all 300ms;
   text-align: left;
 }
