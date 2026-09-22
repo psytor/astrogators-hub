@@ -49,7 +49,7 @@
 /* ========== HERO SECTION ========== */
 
 .home-hero {
-  margin-bottom: var(--spacing-3xl);
+  margin-bottom: var(--spacing-2xl);
 }
 
 .home-title {
@@ -127,7 +127,7 @@
 
 .app-card {
   position: relative;
-  background: rgba(17, 24, 39, 0.8); /* bg-gray-900/80 */
+  background: rgba(17, 24, 39, 0.5); /* was /80 - more of the background shows through */
   backdrop-filter: blur(8px);
   /* Outline (border + corner lines) is drawn by the Card from edgeColor
      ({borderColor}); `transition: all` still animates the hover colour swap. */
