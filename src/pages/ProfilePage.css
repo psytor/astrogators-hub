@@ -122,6 +122,34 @@
   transform: translateX(4px);
 }
 
+/* Security section: change email/password, sign-out-everywhere */
+.security-subsection {
+  padding-top: var(--spacing-lg);
+  border-top: 1px solid var(--color-border);
+}
+
+.security-subsection:first-of-type {
+  padding-top: 0;
+  border-top: none;
+}
+
+.security-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
+  max-width: 420px;
+}
+
+.security-note {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
+
+.security-subsection-danger {
+  border-top-color: rgba(234, 67, 53, 0.3);
+}
+
 /* Ally code management styles */
 .ally-code-add-section {
   margin-bottom: var(--spacing-2xl);
