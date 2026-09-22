@@ -193,17 +193,20 @@
   flex: 1;
 }
 
-.ally-code-item-code {
-  font-family: monospace;
+.ally-code-item-name {
+  /* The prominent line now - a player recognizes their account by name, not
+     by a 9-digit number, so the name gets the size/weight/colour treatment
+     the ally code used to have. */
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
   color: var(--color-text-primary);
-  letter-spacing: 0.05em;
 }
 
-.ally-code-item-name {
+.ally-code-item-code {
+  font-family: monospace;
   font-size: var(--font-size-sm);
   color: var(--color-text-secondary);
+  letter-spacing: 0.05em;
 }
 
 .ally-code-item-actions {
