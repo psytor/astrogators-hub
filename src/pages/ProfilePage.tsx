@@ -100,9 +100,9 @@ export default function ProfilePage() {
     }
   };
 
-  const handleSetActiveAllyCode = (allyCode: string) => {
+  const handleSetDefaultAllyCode = (allyCode: string) => {
     selectAllyCode(allyCode);
-    setAllyCodeSuccess('Ally code set as active!');
+    setAllyCodeSuccess('Default ally code updated!');
     setTimeout(() => setAllyCodeSuccess(''), 2000);
   };
 
@@ -263,25 +263,25 @@ export default function ProfilePage() {
               ) : (
                 <div className="ally-code-list">
                   {allyCodes.map((code) => {
-                    const isActive = code.ally_code === selectedAllyCode;
+                    const isDefault = code.ally_code === selectedAllyCode;
                     const codeId = 'id' in code ? code.id : code.ally_code;
                     return (
-                      <div key={code.ally_code} className={`ally-code-item ${isActive ? 'active' : ''}`}>
+                      <div key={code.ally_code} className={`ally-code-item ${isDefault ? 'default' : ''}`}>
                         <div className="ally-code-item-info">
                           <div className="ally-code-item-code">{formatAllyCode(code.ally_code)}</div>
                           {code.player_name && (
                             <div className="ally-code-item-name">{code.player_name}</div>
                           )}
-                          {isActive && <Badge variant="success" size="sm">Active</Badge>}
+                          {isDefault && <Badge variant="secondary" size="sm">Default</Badge>}
                         </div>
                         <div className="ally-code-item-actions">
-                          {!isActive && (
+                          {!isDefault && (
                             <Button
                               variant="secondary"
                               size="sm"
-                              onClick={() => handleSetActiveAllyCode(code.ally_code)}
+                              onClick={() => handleSetDefaultAllyCode(code.ally_code)}
                             >
-                              Set Active
+                              Set Default
                             </Button>
                           )}
                           <Button
