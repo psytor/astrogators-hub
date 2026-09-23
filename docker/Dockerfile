@@ -36,13 +36,34 @@ RUN rm -rf /usr/share/nginx/html/* /etc/nginx/conf.d/default.conf
 # 404, even though nothing is actually served: the response is just the SPA
 # shell, same size every time. Not a data leak, but it's worth 404ing those
 # so scan tools/log review can tell "not found" from "app responded".
+#
+# Cache split: Vite content-hashes index-*.js/.css under assets/ (a rebuild
+# always changes the filename), so those are safe to cache forever. Everything
+# else - index.html, the SPA fallback for every client-side route, and
+# assets/images/* (public/assets/images/*.jpeg|png, copied verbatim by Vite,
+# NOT content-hashed - see public/assets/images/) - must never be cached, or
+# a stale index.html (or a corrected image that never updates) sticks around
+# until a hard refresh. `always` so the header still shows up on 404s.
+# nginx picks the longest matching prefix, so assets/images/ (declared first,
+# more specific) wins over the general assets/ rule for anything under it.
 RUN printf '%s\n' \
     'server {' \
     '  listen 4173;' \
     '  server_name _;' \
     '  root /usr/share/nginx/html;' \
     '  index index.html;' \
+    '  location /assets/images/ {' \
+    '    alias /usr/share/nginx/html/assets/images/;' \
+    '    add_header Cache-Control "no-cache" always;' \
+    '    try_files $uri =404;' \
+    '  }' \
+    '  location /assets/ {' \
+    '    alias /usr/share/nginx/html/assets/;' \
+    '    add_header Cache-Control "public, max-age=31536000, immutable" always;' \
+    '    try_files $uri =404;' \
+    '  }' \
     '  location / {' \
+    '    add_header Cache-Control "no-cache" always;' \
     '    location ~ \.\w+$ { try_files $uri =404; }' \
     '    try_files $uri $uri/ /index.html;' \
     '  }' \
