@@ -87,6 +87,15 @@ export default function ProfilePage() {
     }
   };
 
+  // The ally-code input/button pair isn't inside a <form> (unlike the email/
+  // password sections below), so Enter does nothing by default - wire it to
+  // the same handler the button's onClick uses.
+  const handleAllyCodeInputKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      handleAddAllyCode();
+    }
+  };
+
   const handleRemoveAllyCode = async (allyCodeId: number | string) => {
     setAllyCodeError('');
     setAllyCodeSuccess('');
@@ -237,6 +246,7 @@ export default function ProfilePage() {
                   placeholder="Enter 9-digit ally code"
                   value={newAllyCode}
                   onChange={(e) => setNewAllyCode(e.target.value.replace(/\D/g, '').slice(0, 9))}
+                  onKeyDown={handleAllyCodeInputKeyDown}
                   disabled={addingAllyCode}
                 />
                 <Button
